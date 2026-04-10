@@ -1,0 +1,117 @@
+[gd_scene format=4 uid="uid://cjdbp5j5ryon1"]
+
+[ext_resource type="Texture2D" uid="uid://0efg8cfgn2of" path="res://Assets/tileset/spritesheet_gr_planet.png" id="1_16myy"]
+[ext_resource type="Script" uid="uid://y6j6nswm8ot8" path="res://Scripts/Map/TacticalMap.gd" id="1_he741"]
+[ext_resource type="Texture2D" uid="uid://bxy0jv7pbvgky" path="res://icon.svg" id="2_he741"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_y8gef"]
+texture = ExtResource("1_16myy")
+texture_region_size = Vector2i(128, 128)
+0:0/0 = 0
+1:0/0 = 0
+1:0/0/custom_data_0 = true
+2:0/0 = 0
+2:0/0/custom_data_0 = true
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
+7:0/0 = 0
+8:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+2:1/0 = 0
+3:1/0 = 0
+4:1/0 = 0
+5:1/0 = 0
+6:1/0 = 0
+7:1/0 = 0
+8:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_0fneb"]
+resource_local_to_scene = true
+tile_size = Vector2i(128, 128)
+custom_data_layer_0/name = "walkable"
+custom_data_layer_0/type = 1
+sources/1 = SubResource("TileSetAtlasSource_y8gef")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y8gef"]
+size = Vector2(128, 126)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0fneb"]
+size = Vector2(112, 104)
+
+[node name="TacticalMap" type="TileMapLayer" unique_id=1957835254]
+script = ExtResource("1_he741")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=290832390]
+z_index = -1
+tile_map_data = PackedByteArray("AAAAAAAAAQABAAAAAAAAAAEAAQABAAAAAAAAAAIAAQABAAAAAAABAAAAAQABAAAAAAACAAAAAQABAAAAAAADAAAAAQABAAAAAAAEAAAAAQABAAAAAAAFAAAAAQAAAAAAAAAGAAAAAQAAAAAAAAAHAAAAAQAAAAAAAAAGAAEAAQAAAAAAAAAHAAEAAQAAAAAAAAAAAAMAAQAAAAAAAAAAAAQAAQAAAAAAAAAAAAUAAQAAAAAAAAAAAAYAAQABAAAAAAAAAAcAAQABAAAAAAABAAcAAQABAAAAAAACAAcAAQABAAAAAAADAAcAAQABAAAAAAAEAAcAAQABAAAAAAAFAAcAAQABAAAAAAAGAAcAAQAAAAAAAAAHAAcAAQAAAAAAAAAIAAcAAQAAAAAAAAAJAAcAAQABAAAAAAAKAAcAAQABAAAAAAAKAAQAAQABAAAAAAAKAAUAAQABAAAAAAAKAAYAAQABAAAAAAAKAAMAAQABAAAAAAAKAAIAAQABAAAAAAAKAAEAAQAAAAAAAAAKAAAAAQAAAAAAAAAIAAMAAQAAAAAAAAAJAAMAAQAAAAAAAAAJAAQAAQAAAAAAAAAHAAUAAQAAAAAAAAADAAMAAQAAAAAAAAAEAAMAAQAAAAAAAAABAAEAAQAAAAAAAAABAAIAAQABAAAAAAABAAMAAQABAAAAAAABAAQAAQABAAAAAAABAAUAAQABAAAAAAABAAYAAQABAAAAAAACAAYAAQABAAAAAAADAAYAAQABAAAAAAAEAAYAAQABAAAAAAAFAAYAAQABAAAAAAAGAAYAAQABAAAAAAAHAAYAAQABAAAAAAAIAAYAAQABAAAAAAAJAAYAAQABAAAAAAACAAUAAQABAAAAAAADAAUAAQABAAAAAAAEAAUAAQABAAAAAAAFAAUAAQABAAAAAAAGAAUAAQABAAAAAAACAAQAAQABAAAAAAADAAQAAQABAAAAAAAEAAQAAQABAAAAAAAFAAQAAQABAAAAAAAGAAQAAQABAAAAAAAHAAQAAQABAAAAAAAIAAQAAQABAAAAAAAIAAUAAQABAAAAAAAJAAUAAQABAAAAAAAIAAAAAQABAAAAAAAJAAAAAQABAAAAAAAIAAEAAQABAAAAAAAIAAIAAQABAAAAAAAJAAEAAQABAAAAAAAJAAIAAQABAAAAAAACAAEAAQABAAAAAAADAAEAAQABAAAAAAAEAAEAAQABAAAAAAAFAAEAAQABAAAAAAACAAIAAQABAAAAAAADAAIAAQABAAAAAAAEAAIAAQABAAAAAAAFAAIAAQABAAAAAAAGAAIAAQABAAAAAAAHAAIAAQABAAAAAAAFAAMAAQABAAAAAAAGAAMAAQABAAAAAAAHAAMAAQABAAAAAAACAAMAAQABAAAAAAA=")
+tile_set = SubResource("TileSet_0fneb")
+
+[node name="PlayerCursor" type="CharacterBody2D" parent="." unique_id=1274703824]
+position = Vector2(704, 959)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerCursor" unique_id=1586641996]
+modulate = Color(0, 0.49155623, 0.008308522, 1)
+texture = ExtResource("2_he741")
+
+[node name="Camera2D" type="Camera2D" parent="PlayerCursor" unique_id=753660318]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerCursor" unique_id=611832649]
+shape = SubResource("RectangleShape2D_y8gef")
+
+[node name="AmmoLabel" type="Label" parent="PlayerCursor" unique_id=1732673896]
+offset_left = -18.0
+offset_top = -80.0
+offset_right = 22.0
+offset_bottom = -48.0
+theme_override_font_sizes/font_size = 23
+text = "5/5"
+
+[node name="EnemyNode" type="Area2D" parent="." unique_id=1702568591]
+position = Vector2(829, 708)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="EnemyNode" unique_id=704574524]
+modulate = Color(1, 0, 0, 1)
+position = Vector2(2.9999948, 4.9591064e-05)
+scale = Vector2(0.87500006, 0.81249994)
+texture = ExtResource("2_he741")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyNode" unique_id=1345545266]
+position = Vector2(3, 0)
+shape = SubResource("RectangleShape2D_0fneb")
+
+[node name="EnemyNode3" type="Area2D" parent="." unique_id=636636283]
+position = Vector2(320, 960)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="EnemyNode3" unique_id=2074980168]
+modulate = Color(1, 0, 0, 1)
+position = Vector2(3.8146973e-06, -3.8146973e-06)
+scale = Vector2(0.87500006, 0.87500006)
+texture = ExtResource("2_he741")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyNode3" unique_id=1299254379]
+position = Vector2(-1, -1)
+shape = SubResource("RectangleShape2D_0fneb")
+
+[node name="EnemyNode2" type="Area2D" parent="." unique_id=151179801]
+position = Vector2(192, 704)
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="EnemyNode2" unique_id=358361496]
+modulate = Color(1, 0, 0, 1)
+position = Vector2(3.33786e-06, 3.8146973e-06)
+scale = Vector2(0.87499994, 0.87500006)
+texture = ExtResource("2_he741")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyNode2" unique_id=404433255]
+position = Vector2(-1, -1)
+shape = SubResource("RectangleShape2D_0fneb")
+
+[connection signal="body_entered" from="EnemyNode" to="." method="_on_enemy_node_body_entered"]
+[connection signal="body_entered" from="EnemyNode3" to="." method="_on_enemy_node_3_body_entered"]
+[connection signal="body_entered" from="EnemyNode2" to="." method="_on_enemy_node_2_body_entered"]

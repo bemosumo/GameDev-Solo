@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://d0bxqjai5y2df"]
+
+[ext_resource type="Texture2D" uid="uid://bxy0jv7pbvgky" path="res://icon.svg" id="1_8whcg"]
+[ext_resource type="Script" uid="uid://b4x30qwwp6vl2" path="res://Scripts/Battle/StationaryEnemy.gd" id="1_jswel"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jswel"]
+size = Vector2(126, 128)
+
+[node name="StationaryEnemy" type="CharacterBody2D" unique_id=732647283]
+collision_layer = 2
+script = ExtResource("1_jswel")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=25912360]
+modulate = Color(0.88937664, 0.51917017, 0.08585345, 1)
+texture = ExtResource("1_8whcg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=429559096]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_jswel")
+
+[node name="Timer" type="Timer" parent="." unique_id=940338587]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
