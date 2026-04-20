@@ -6,6 +6,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jswel"]
 size = Vector2(126, 128)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jswel"]
+bg_color = Color(0.6, 0, 0, 1)
+
 [node name="StationaryEnemy" type="CharacterBody2D" unique_id=732647283]
 collision_layer = 2
 script = ExtResource("1_jswel")
@@ -20,5 +23,12 @@ shape = SubResource("RectangleShape2D_jswel")
 
 [node name="Timer" type="Timer" parent="." unique_id=940338587]
 autostart = true
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=260246494]
+offset_left = -64.0
+offset_top = -71.0
+offset_right = 63.0
+offset_bottom = -44.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_jswel")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

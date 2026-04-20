@@ -51,7 +51,6 @@ tile_set = SubResource("TileSet_0fneb")
 
 [node name="PlayerCursor" type="CharacterBody2D" parent="." unique_id=1274703824]
 position = Vector2(704, 959)
-metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerCursor" unique_id=1586641996]
 modulate = Color(0, 0.49155623, 0.008308522, 1)
@@ -69,6 +68,12 @@ offset_right = 22.0
 offset_bottom = -48.0
 theme_override_font_sizes/font_size = 23
 text = "5/5"
+
+[node name="HealthBar" type="ProgressBar" parent="PlayerCursor" unique_id=1111301452]
+offset_left = -64.0
+offset_top = 37.0
+offset_right = 65.0
+offset_bottom = 64.0
 
 [node name="EnemyNode" type="Area2D" parent="." unique_id=1702568591]
 position = Vector2(829, 708)

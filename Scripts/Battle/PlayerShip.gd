@@ -1,11 +1,26 @@
 extends CharacterBody2D
 
 var speed: float = 400.0
-var bullet_scene = preload("res://Scenes/map/Bullet.tscn") 
+var bullet_scene = preload("res://Scenes/map/Bullet.tscn")
+
+@onready var health_bar = $HealthBar
 
 func _ready():
-	# PENTING: Masukin kapal ini ke grup "player" biar bisa dilacak musuh
 	add_to_group("player")
+	# Set bar sesuai data di GlobalData
+	health_bar.max_value = GlobalData.max_hp
+	health_bar.value = GlobalData.current_hp
+
+func take_damage(amount: float):
+	GlobalData.current_hp -= amount
+	# Update visual bar
+	health_bar.value = GlobalData.current_hp
+	
+	if GlobalData.current_hp <= 0:
+		await get_tree().create_timer(1.0).timeout
+		GlobalData.reset_data()
+		GlobalData.last_player_pos = Vector2i(-1, -1)
+		get_tree().change_scene_to_file("res://Scenes/map/TacticalMap.tscn")
 
 func _physics_process(_delta):
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -17,26 +32,26 @@ func _physics_process(_delta):
 	global_position.x = clamp(global_position.x, 0, 570)
 	global_position.y = clamp(global_position.y, 0, 648)
 
-	if Input.is_action_just_pressed("ui_accept"): 
+	if Input.is_action_just_pressed("ui_accept"):
 		shoot()
 
 func shoot():
 	var b = bullet_scene.instantiate()
-	get_parent().add_child(b) 
+	get_parent().add_child(b)
 	b.position = self.position
 	
-func take_damage(amount: float):
-	GlobalData.current_hp -= amount
-	print("ADUH! Sisa HP Player: ", GlobalData.current_hp)
-	
-	if GlobalData.current_hp <= 0:
-		print("KAPAL HANCUR! GAME OVER!")
-		# 1. Kasih jeda dikit biar berasa matinya
-		await get_tree().create_timer(1.0).timeout 
-		
-		# 2. Reset semua data lu balik ke awal
-		GlobalData.reset_data() 
-		GlobalData.last_player_pos = Vector2i(-1, -1) # Reset posisi spawn
-		
-		# 3. Lempar balik ke Peta (Mulai dari nol)
-		get_tree().change_scene_to_file("res://Scenes/map/TacticalMap.tscn")
+#func take_damage(amount: float):
+	#GlobalData.current_hp -= amount
+	#print("ADUH! Sisa HP Player: ", GlobalData.current_hp)
+	#
+	#if GlobalData.current_hp <= 0:
+		#print("KAPAL HANCUR! GAME OVER!")
+		## 1. Kasih jeda dikit biar berasa matinya
+		#await get_tree().create_timer(1.0).timeout
+		#
+		## 2. Reset semua data lu balik ke awal
+		#GlobalData.reset_data()
+		#GlobalData.last_player_pos = Vector2i(-1, -1) # Reset posisi spawn
+		#
+		## 3. Lempar balik ke Peta (Mulai dari nol)
+		#get_tree().change_scene_to_file("res://Scenes/map/TacticalMap.tscn")

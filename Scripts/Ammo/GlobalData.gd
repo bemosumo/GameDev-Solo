@@ -5,8 +5,8 @@ var max_ammo: int = 5
 var current_ammo: int = 5
 
 # --- DATA STAT KAPAL ---
-var max_hp: int = 100
-var current_hp: int = 100
+var max_hp: int = 300
+var current_hp: int = 300
 var base_damage: float = 10.0
 
 # --- DATA PERSISTENCE (PENTING BUAT MAP) ---
@@ -29,6 +29,5 @@ func get_final_damage() -> float:
 func reset_data():
 	current_ammo = max_ammo
 	current_hp = max_hp
-	# Jangan lupa bersihin daftar musuh mati kalau game direset/mulai dari awal
 	defeated_enemies.clear() 
 	current_enemy_name = ""

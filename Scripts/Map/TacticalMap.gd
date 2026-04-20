@@ -8,8 +8,8 @@ var is_moving = false
 var current_map_pos = Vector2i()
 
 # Dictionary buat nyimpen data taktis
-var reachable_cells = {} 
-var enemy_positions = {} 
+var reachable_cells = {}
+var enemy_positions = {}
 
 func _ready():
 	# Hapus musuh yang sudah mati (Persistence)
@@ -35,10 +35,15 @@ func _ready():
 	update_tactical_data()
 	update_ammo_ui()
 
+@onready var health_bar = $PlayerCursor/HealthBar
+
 func update_ammo_ui():
-	# Update tulisan Ammo di atas kapal (contoh: 5/5)
 	if ammo_label:
 		ammo_label.text = str(GlobalData.current_ammo) + "/" + str(GlobalData.max_ammo)
+	# Update HP Bar di Map juga
+	if health_bar:
+		health_bar.max_value = GlobalData.max_hp
+		health_bar.value = GlobalData.current_hp
 
 func update_tactical_data():
 	scan_enemies()
@@ -68,7 +73,7 @@ func calculate_reachable_cells():
 			if path.size() - 1 < 3:
 				for dir in [Vector2i(1,0), Vector2i(-1,0), Vector2i(0,1), Vector2i(0,-1)]:
 					var next_pos = pos + dir
-					if next_pos in path: continue 
+					if next_pos in path: continue
 					
 					var tile_data = tilemap.get_cell_tile_data(next_pos)
 					if tile_data and tile_data.get_custom_data("walkable"):
@@ -82,18 +87,18 @@ func calculate_reachable_cells():
 							queue.append({"pos": next_pos, "path": new_path})
 
 func _draw():
-	if is_moving: return 
+	if is_moving: return
 	
 	var t_size = tilemap.tile_set.tile_size
 	
 	for cell in reachable_cells.keys():
-		if cell == current_map_pos: continue 
+		if cell == current_map_pos: continue
 		
 		var center_pos = tilemap.map_to_local(cell)
 		var rect = Rect2(center_pos - Vector2(t_size.x/2.0, t_size.y/2.0), t_size)
 		
 		if enemy_positions.has(cell):
-			draw_rect(rect, Color(1.0, 0.2, 0.2, 0.4)) 
+			draw_rect(rect, Color(1.0, 0.2, 0.2, 0.4))
 		else:
 			draw_rect(rect, Color(0.2, 0.6, 1.0, 0.4))
 
@@ -106,14 +111,14 @@ func _unhandled_input(event):
 		
 		if reachable_cells.has(target_map_pos) and target_map_pos != current_map_pos:
 			var path_to_take = reachable_cells[target_map_pos]
-			path_to_take.pop_front() 
+			path_to_take.pop_front()
 			move_player_along_path(path_to_take)
 		else:
 			print("Gak bisa ke situ komandan!")
 
 func move_player_along_path(path):
 	is_moving = true
-	queue_redraw() 
+	queue_redraw()
 	
 	for next_tile in path:
 		# ... (kode tween gerak tetap sama)
@@ -131,13 +136,13 @@ func move_player_along_path(path):
 			
 			var enemy_node = enemy_positions[current_map_pos]
 			GlobalData.current_enemy_name = enemy_node.name
-			GlobalData.use_ammo(1) 
+			GlobalData.use_ammo(1)
 			update_ammo_ui()
 			enemy_node.queue_free()
 			
-			await get_tree().create_timer(0.5).timeout 
+			await get_tree().create_timer(0.5).timeout
 			get_tree().change_scene_to_file("res://Scenes/map/BattlePhase.tscn")
-			return 
+			return
 			
 	is_moving = false
 	# --- UPDATE JUGA POSISI TERAKHIR SETIAP SELESAI GERAK BIASA ---

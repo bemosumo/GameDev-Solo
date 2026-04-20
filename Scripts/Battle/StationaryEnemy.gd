@@ -1,11 +1,30 @@
 extends CharacterBody2D
 
-# Pastikan alamat ini sama dengan letak file peluru musuh lu
-var enemy_bullet_scene = preload("res://Scenes/map/EnemyBullet.tscn") 
-var hp: float = 20.0 # Darah Kroco
+var enemy_bullet_scene = preload("res://Scenes/map/EnemyBullet.tscn")
+var hp: float = 60.0
+
+@onready var health_bar = $HealthBar
 
 func _ready():
-	add_to_group("enemy") # Tambahin baris ini
+	add_to_group("enemy")
+	
+	# Inisialisasi bar sesuai HP saat ini
+	health_bar.max_value = hp
+	health_bar.value = hp
+
+func take_damage(amount: float):
+	hp -= amount
+	# Update visual bar
+	health_bar.value = hp
+	
+	print(name, " kena hit! Sisa HP: ", hp)
+	
+	if hp <= 0:
+		if name == "Boss":
+			var arena = get_parent()
+			if arena.has_method("enemy_defeated"):
+				arena.enemy_defeated()
+		queue_free()
 
 # Panggil otomatis dari Signal Timer tiap 1 detik
 func _on_timer_timeout():
@@ -24,9 +43,3 @@ func _on_timer_timeout():
 		# 4. Arahkan peluru
 		b.direction = aim_direction
 		b.rotation = aim_direction.angle() # Bikin moncong peluru muter
-
-
-func take_damage(amount: float):
-	hp -= amount
-	if hp <= 0:
-		queue_free() # Kroco meledak, tapi game tetep jalan

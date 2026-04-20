@@ -1,19 +1,42 @@
 extends CharacterBody2D
 
 var speed: float = 150.0
-var target_pos: Vector2 
-var hp: float = 50.0 # Darah Bos
+var target_pos: Vector2
+var hp: float = 200.0 # Darah Bos
 
 # Pastikan alamat scene peluru musuh ini BENER sesuai tempat lu nyimpen EnemyBullet.tscn
-var enemy_bullet_scene = preload("res://Scenes/map/EnemyBullet.tscn") 
+var enemy_bullet_scene = preload("res://Scenes/map/EnemyBullet.tscn")
+
+@onready var health_bar = $HealthBar
 
 func _ready():
-	add_to_group("enemy") # Tambahin baris ini
-	pick_new_random_position()
+	add_to_group("enemy")
+	
+	# Inisialisasi bar sesuai HP saat ini
+	health_bar.max_value = hp
+	health_bar.value = hp
+	
+	# Kalau di Boss, panggil fungsi gerak acak juga
+	if has_method("pick_new_random_position"):
+		pick_new_random_position()
+
+func take_damage(amount: float):
+	hp -= amount
+	# Update visual bar
+	health_bar.value = hp
+	
+	print(name, " kena hit! Sisa HP: ", hp)
+	
+	if hp <= 0:
+		if name == "Boss":
+			var arena = get_parent()
+			if arena.has_method("enemy_defeated"):
+				arena.enemy_defeated()
+		queue_free()
 
 func pick_new_random_position():
 	# Nentuin koordinat ngacak di SETENGAH LAYAR KANAN
-	var random_x = randf_range(700, 1100) 
+	var random_x = randf_range(700, 1100)
 	var random_y = randf_range(50, 600)
 	target_pos = Vector2(random_x, random_y)
 
@@ -51,14 +74,3 @@ func _on_timer_timeout():
 		
 		# Putar gambar pelurunya biar moncongnya ngadep ke Player
 		b.rotation = aim_direction.angle()
-		
-func take_damage(amount: float):
-	hp -= amount
-	print("Bos Kena Hit! Sisa HP Bos: ", hp)
-	
-	if hp <= 0:
-		# Lapor ke arena kalau bos kalah (Misi Selesai)
-		var arena = get_parent()
-		if arena.has_method("enemy_defeated"):
-			arena.enemy_defeated()
-		queue_free() # Bos meledak
