@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://d2kvyl4vdh7rc"]
 
-[ext_resource type="Script" uid="uid://d4f7m102nfo5y" path="res://Scripts/Enemy/EnemyCarrier.gd" id="1_8td5p"]
+[ext_resource type="Script" uid="uid://cyo8pdw2cife4" path="res://Scripts/Enemy/EnemyBase.gd" id="1_8td5p"]
 [ext_resource type="Texture2D" uid="uid://cfb5af6duwfdg" path="res://Assets/kapal/erasebg-transformed (1).png" id="2_etjyp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w3n6c"]
 size = Vector2(857, 186.5)
 
-[node name="EnemyStealth" type="Area2D" unique_id=1163131703]
+[node name="EnemyStealth" type="CharacterBody2D" unique_id=1362676063]
 script = ExtResource("1_8td5p")
 metadata/_edit_group_ = true
 
@@ -26,4 +26,9 @@ autostart = true
 [node name="Muzzle" type="Marker2D" parent="." unique_id=1552804016]
 position = Vector2(200, 31)
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=644798595]
+offset_left = -191.0
+offset_top = -117.0
+offset_right = 193.0
+offset_bottom = -90.0
+theme_override_colors/font_color = Color(0.9490196, 0, 0, 1)

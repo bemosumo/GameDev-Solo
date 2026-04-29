@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4jnve"]
 size = Vector2(1713, 552)
 
-[node name="EnemyFregat" type="Area2D" unique_id=1163131703]
+[node name="EnemyFregat" type="CharacterBody2D" unique_id=219568067]
 script = ExtResource("1_ta0wx")
 metadata/_edit_group_ = true
 
@@ -24,4 +24,9 @@ shape = SubResource("RectangleShape2D_4jnve")
 [node name="Muzzle" type="Marker2D" parent="." unique_id=2084323047]
 position = Vector2(281, 56)
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=976134182]
+offset_left = -393.0
+offset_top = -263.0
+offset_right = 254.0
+offset_bottom = -236.0
+theme_override_colors/font_color = Color(0.9490196, 0, 0, 1)

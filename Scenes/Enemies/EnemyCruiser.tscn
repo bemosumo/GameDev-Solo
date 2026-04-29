@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4jnve"]
 size = Vector2(2106, 549)
 
-[node name="EnemyCruiser" type="Area2D" unique_id=1163131703]
+[node name="EnemyCruiser" type="CharacterBody2D" unique_id=567443506]
 script = ExtResource("1_kjoir")
 metadata/_edit_group_ = true
 
@@ -24,4 +24,9 @@ shape = SubResource("RectangleShape2D_4jnve")
 [node name="Muzzle" type="Marker2D" parent="." unique_id=2084323047]
 position = Vector2(-794, 111)
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1634714262]
+offset_left = -333.0
+offset_top = -292.0
+offset_right = 256.0
+offset_bottom = -265.0
+theme_override_colors/font_color = Color(0.9490196, 0, 0, 1)

@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4jnve"]
 size = Vector2(1120, 445)
 
-[node name="EnemyHovercraft" type="Area2D" unique_id=1163131703]
+[node name="EnemyHovercraft" type="CharacterBody2D" unique_id=1351826948]
 script = ExtResource("1_q2r2m")
 metadata/_edit_group_ = true
 
@@ -24,4 +24,9 @@ shape = SubResource("RectangleShape2D_4jnve")
 [node name="Muzzle" type="Marker2D" parent="." unique_id=2084323047]
 position = Vector2(134, -12)
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1338362008]
+offset_left = -213.0
+offset_top = -243.0
+offset_right = 241.0
+offset_bottom = -216.0
+theme_override_colors/font_color = Color(0.9490196, 0, 0, 1)
