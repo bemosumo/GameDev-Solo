@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://co7a77i5pswfo"]
+
+[ext_resource type="Script" uid="uid://d4f7m102nfo5y" path="res://Scripts/Enemy/EnemyCarrier.gd" id="1_mhnqm"]
+[ext_resource type="Texture2D" uid="uid://cfb5af6duwfdg" path="res://Assets/kapal/erasebg-transformed (1).png" id="2_5yauk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w3n6c"]
+size = Vector2(93, 145)
+
+[node name="ObstacleBuoy" type="Area2D" unique_id=1163131703]
+script = ExtResource("1_mhnqm")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1977723093]
+scale = Vector2(0.49847093, 0.49847096)
+texture = ExtResource("2_5yauk")
+region_enabled = true
+region_rect = Rect2(554.31714, 2335.941, 198.7699, 283.2146)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=291513650]
+position = Vector2(0.5, -8.5)
+shape = SubResource("RectangleShape2D_w3n6c")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

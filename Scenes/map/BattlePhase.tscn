@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://drobifiq5fmk7"]
 
-[ext_resource type="Texture2D" uid="uid://bxy0jv7pbvgky" path="res://icon.svg" id="1_6qoab"]
 [ext_resource type="Script" uid="uid://cdmhvkly7i1h7" path="res://Scripts/Battle/PlayerShip.gd" id="1_sj7t3"]
 [ext_resource type="Script" uid="uid://ddcdsd6ytmsti" path="res://Scripts/Battle/BattlePhase.gd" id="1_u2brl"]
-[ext_resource type="Texture2D" uid="uid://dqyjssqt2omdm" path="res://Assets/kapal/4.png" id="4_j0p6c"]
+[ext_resource type="Texture2D" uid="uid://bceqt2woi6pgn" path="res://Assets/characters/5-3.png" id="3_j0p6c"]
+[ext_resource type="Texture2D" uid="uid://c86bejlo5k7ys" path="res://Assets/kapal/Anime Ocean BG 110.png" id="4_j0p6c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sj7t3"]
 size = Vector2(130, 128)
@@ -16,29 +16,29 @@ script = ExtResource("1_u2brl")
 
 [node name="PlayerShip" type="CharacterBody2D" parent="." unique_id=863159191]
 z_index = 1
-position = Vector2(577, 509)
+position = Vector2(584, 543)
 collision_mask = 3
 script = ExtResource("1_sj7t3")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerShip" unique_id=1770661095]
-modulate = Color(0.2243546, 0.46273637, 0.05591985, 1)
-texture = ExtResource("1_6qoab")
+texture = ExtResource("3_j0p6c")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerShip" unique_id=1467766824]
 shape = SubResource("RectangleShape2D_sj7t3")
 
 [node name="HealthBar" type="ProgressBar" parent="PlayerShip" unique_id=1365486758]
-offset_left = -66.0
-offset_top = -77.0
-offset_right = 65.0
-offset_bottom = -50.0
+offset_left = -63.0
+offset_top = -109.0
+offset_right = 68.0
+offset_bottom = -82.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_ujvlc")
+show_percentage = false
 
 [node name="Timer" type="Timer" parent="." unique_id=978588119]
 autostart = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=10906081]
-position = Vector2(578, 322)
-scale = Vector2(0.4982639, 0.50308645)
+position = Vector2(576.49994, 223.50005)
+scale = Vector2(1.5013019, 1.6582031)
 texture = ExtResource("4_j0p6c")

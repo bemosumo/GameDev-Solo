@@ -244,6 +244,7 @@ texture_region_size = Vector2i(128, 128)
 0:0/0 = 0
 0:0/0/custom_data_0 = true
 1:0/0 = 0
+1:0/0/custom_data_0 = true
 
 [sub_resource type="TileSet" id="TileSet_t28v1"]
 tile_size = Vector2i(128, 128)
@@ -4077,6 +4078,8 @@ sources/6 = SubResource("TileSetAtlasSource_0fdh8")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_y8gef"]
 size = Vector2(128, 126)
 
+[sub_resource type="SystemFont" id="SystemFont_4rl6s"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0fneb"]
 size = Vector2(112, 104)
 
@@ -4098,6 +4101,7 @@ tile_set = SubResource("TileSet_iil0d")
 
 [node name="PlayerCursor" type="CharacterBody2D" parent="." unique_id=1274703824]
 position = Vector2(704, 959)
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerCursor" unique_id=1586641996]
 position = Vector2(9, 0)
@@ -4111,10 +4115,11 @@ position = Vector2(1, -4)
 shape = SubResource("RectangleShape2D_y8gef")
 
 [node name="AmmoLabel" type="Label" parent="PlayerCursor" unique_id=1732673896]
-offset_left = -18.0
-offset_top = -80.0
-offset_right = 22.0
-offset_bottom = -48.0
+offset_left = -17.0
+offset_top = -91.0
+offset_right = 23.0
+offset_bottom = -59.0
+theme_override_fonts/font = SubResource("SystemFont_4rl6s")
 theme_override_font_sizes/font_size = 23
 text = "5/5"
 
@@ -4125,6 +4130,7 @@ offset_left = -64.0
 offset_top = 37.0
 offset_right = 65.0
 offset_bottom = 64.0
+show_percentage = false
 
 [node name="MobNode_Patrol_1" type="Area2D" parent="." unique_id=1702568591]
 position = Vector2(1085, 190)

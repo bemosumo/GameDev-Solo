@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bh8y45wri62if"]
+
+[ext_resource type="Script" uid="uid://cyo8pdw2cife4" path="res://Scripts/Enemy/EnemyBase.gd" id="1_kjoir"]
+[ext_resource type="Texture2D" uid="uid://cfb5af6duwfdg" path="res://Assets/kapal/erasebg-transformed (1).png" id="2_3db5p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4jnve"]
+size = Vector2(2106, 549)
+
+[node name="EnemyCruiser" type="Area2D" unique_id=1163131703]
+script = ExtResource("1_kjoir")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1200592120]
+texture = ExtResource("2_3db5p")
+region_enabled = true
+region_rect = Rect2(270.62714, 1552.2014, 2118.281, 541.6941)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1864063815]
+position = Vector2(-9, 11.5)
+shape = SubResource("RectangleShape2D_4jnve")
+
+[node name="ShootTimer" type="Timer" parent="." unique_id=1695906228]
+
+[node name="Muzzle" type="Marker2D" parent="." unique_id=2084323047]
+position = Vector2(-794, 111)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
