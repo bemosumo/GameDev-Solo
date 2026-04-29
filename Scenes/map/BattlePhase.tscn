@@ -3,8 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bxy0jv7pbvgky" path="res://icon.svg" id="1_6qoab"]
 [ext_resource type="Script" uid="uid://cdmhvkly7i1h7" path="res://Scripts/Battle/PlayerShip.gd" id="1_sj7t3"]
 [ext_resource type="Script" uid="uid://ddcdsd6ytmsti" path="res://Scripts/Battle/BattlePhase.gd" id="1_u2brl"]
-[ext_resource type="Script" uid="uid://d35e0hou8kbaa" path="res://Scripts/Battle/Boss.gd" id="4_j0p6c"]
-[ext_resource type="PackedScene" uid="uid://d0bxqjai5y2df" path="res://Scenes/map/StationaryEnemy.tscn" id="5_ujvlc"]
+[ext_resource type="Texture2D" uid="uid://dqyjssqt2omdm" path="res://Assets/kapal/4.png" id="4_j0p6c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sj7t3"]
 size = Vector2(130, 128)
@@ -12,17 +11,12 @@ size = Vector2(130, 128)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ujvlc"]
 bg_color = Color(0.011401681, 0.4669956, 0, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_u2brl"]
-size = Vector2(80.5, 82.5)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8m0q7"]
-bg_color = Color(0.6056738, 1.6605109e-06, 3.85046e-07, 1)
-
 [node name="BattlePhase" type="Node2D" unique_id=2136306638]
 script = ExtResource("1_u2brl")
 
 [node name="PlayerShip" type="CharacterBody2D" parent="." unique_id=863159191]
-position = Vector2(152, 342)
+z_index = 1
+position = Vector2(577, 509)
 collision_mask = 3
 script = ExtResource("1_sj7t3")
 metadata/_edit_group_ = true
@@ -41,38 +35,10 @@ offset_right = 65.0
 offset_bottom = -50.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_ujvlc")
 
-[node name="Boss" type="CharacterBody2D" parent="." unique_id=1657065519 groups=["enemy"]]
-position = Vector2(896, 328)
-scale = Vector2(2, 2)
-collision_layer = 2
-script = ExtResource("4_j0p6c")
-metadata/_edit_group_ = true
-
-[node name="Sprite2D" type="Sprite2D" parent="Boss" unique_id=928755061]
-modulate = Color(1, 0, 0, 1)
-position = Vector2(24.5, 24.5)
-scale = Vector2(0.6171875, 0.6171875)
-texture = ExtResource("1_6qoab")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Boss" unique_id=868631157]
-position = Vector2(23.75, 23.5)
-shape = SubResource("RectangleShape2D_u2brl")
-
-[node name="HealthBar" type="ProgressBar" parent="Boss" unique_id=782219148]
-offset_left = -14.0
-offset_top = -24.0
-offset_right = 62.5
-offset_bottom = 3.0
-theme_override_styles/fill = SubResource("StyleBoxFlat_8m0q7")
-show_percentage = false
-
 [node name="Timer" type="Timer" parent="." unique_id=978588119]
 autostart = true
 
-[node name="StationaryEnemy" parent="." unique_id=732647283 instance=ExtResource("5_ujvlc")]
-position = Vector2(799, 211)
-
-[node name="StationaryEnemy2" parent="." unique_id=1893876419 instance=ExtResource("5_ujvlc")]
-position = Vector2(802, 537)
-
-[connection signal="timeout" from="Timer" to="Boss" method="_on_timer_timeout"]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=10906081]
+position = Vector2(578, 322)
+scale = Vector2(0.4982639, 0.50308645)
+texture = ExtResource("4_j0p6c")

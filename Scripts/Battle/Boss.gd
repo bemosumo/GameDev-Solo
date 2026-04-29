@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+signal defeated
+
 var speed: float = 150.0
 var target_pos: Vector2
 var hp: float = 200.0 # Darah Bos
@@ -28,16 +30,14 @@ func take_damage(amount: float):
 	print(name, " kena hit! Sisa HP: ", hp)
 	
 	if hp <= 0:
-		if name == "Boss":
-			var arena = get_parent()
-			if arena.has_method("enemy_defeated"):
-				arena.enemy_defeated()
+		defeated.emit()
 		queue_free()
 
 func pick_new_random_position():
-	# Nentuin koordinat ngacak di SETENGAH LAYAR KANAN
-	var random_x = randf_range(700, 1100)
-	var random_y = randf_range(50, 600)
+	# Nentuin koordinat ngacak di SETENGAH LAYAR ATAS
+	# X bisa dari ujung kiri ke kanan, Y tertahan di atas
+	var random_x = randf_range(100, 1050) 
+	var random_y = randf_range(50, 250) 
 	target_pos = Vector2(random_x, random_y)
 
 func _physics_process(_delta):
@@ -52,25 +52,29 @@ func _physics_process(_delta):
 		pick_new_random_position()
 
 # FUNGSI TEMBAK (Dipanggil otomatis sama Timer tiap 1.5 detik)
+# FUNGSI TEMBAK BARBAR (Spread Shot 5 Arah)
 func _on_timer_timeout():
-	# 1. Cari dimana Player berada (menggunakan grup yang kita buat di Tahap 1)
 	var player = get_tree().get_first_node_in_group("player")
 	
-	# 2. Kalau Player ketemu, siapkan peluru!
 	if player:
-		# Bikin (Spawn) peluru merah
-		var b = enemy_bullet_scene.instantiate()
+		# 1. Cari arah tengah (lurus ke player)
+		var base_direction = (player.global_position - global_position).normalized()
+		var base_angle = base_direction.angle()
 		
-		# Taruh pelurunya di arena (bukan di dalam perut bos)
-		get_parent().add_child(b)
-		b.global_position = self.global_position
-		
-		# 3. MENGINCAR PLAYER
-		# Hitung garis lurus dari Bos ke arah posisi Player saat ini
-		var aim_direction = (player.global_position - global_position).normalized()
-		
-		# Kasih tau pelurunya arah terbangnya ke mana
-		b.direction = aim_direction
-		
-		# Putar gambar pelurunya biar moncongnya ngadep ke Player
-		b.rotation = aim_direction.angle()
+		# 2. Tembak 5 peluru sekaligus dalam bentuk kipas
+		# Loop berjalan untuk nilai: -2, -1, 0, 1, 2
+		for i in range(-2, 3): 
+			var b = enemy_bullet_scene.instantiate()
+			get_parent().add_child(b)
+			b.global_position = self.global_position
+			
+			# 3. Miringkan sudut tembakan (15 derajat antar peluru)
+			# deg_to_rad berfungsi mengubah derajat jadi radian (bahasa matematika Godot)
+			var spread_angle = base_angle + (i * deg_to_rad(15))
+			
+			# 4. Ubah sudut baru tadi kembali menjadi arah (Vector2)
+			var final_direction = Vector2(cos(spread_angle), sin(spread_angle))
+			
+			# 5. Arahkan pelurunya!
+			b.direction = final_direction
+			b.rotation = final_direction.angle()

@@ -1,6 +1,7 @@
 extends Node2D
 
-@onready var tilemap = $TileMapLayer
+@onready var tilemap = $Laut
+@onready var layer_pulau = $Pulau
 @onready var player = $PlayerCursor
 @onready var ammo_label = $PlayerCursor/AmmoLabel # Ambil referensi ke Label Ammo
 
@@ -12,24 +13,35 @@ var reachable_cells = {}
 var enemy_positions = {}
 
 func _ready():
-	# Hapus musuh yang sudah mati (Persistence)
+	# 1. Hapus musuh yang sudah mati (Persistence)
 	for enemy_name in GlobalData.defeated_enemies:
 		var node_musuh = get_node_or_null(enemy_name)
 		if node_musuh:
 			node_musuh.queue_free()
 
+	# --- 2. LOGIKA MUNCULIN BOSS ---
+	var boss_node = get_node_or_null("BossNode")
+	if boss_node:
+		# Hitung ada berapa "MobNode" di daftar musuh yang udah mati
+		var mobs_defeated = 0
+		for enemy_name in GlobalData.defeated_enemies:
+			if "MobNode" in enemy_name:
+				mobs_defeated += 1
+		
+		# Kalau udah 7 atau lebih yang mati, Bos muncul! Kalau belum, sembunyi.
+		if mobs_defeated >= 7:
+			boss_node.show() 
+		else:
+			boss_node.hide() 
+	# --------------------------------
+
 	# LOGIKA POSISI BARU:
 	if GlobalData.last_player_pos != Vector2i(-1, -1):
-		# Jika ada data simpanan, gunakan posisi itu
 		current_map_pos = GlobalData.last_player_pos
-		print("Balik dari Battle, posisi dipulihkan ke: ", current_map_pos)
 	else:
-		# Jika tidak ada (baru pertama main), ambil posisi dari tempat lu naruh di editor
 		var player_local_pos = tilemap.to_local(player.global_position)
 		current_map_pos = tilemap.local_to_map(player_local_pos)
-		print("Pertama kali main, posisi awal: ", current_map_pos)
 	
-	# Rapihkan posisi visual kapal (Snap ke Grid)
 	player.global_position = tilemap.to_global(tilemap.map_to_local(current_map_pos))
 	
 	update_tactical_data()
@@ -53,10 +65,11 @@ func update_tactical_data():
 func scan_enemies():
 	enemy_positions.clear()
 	for child in get_children():
-		# Tambahin syarat: and not child.is_queued_for_deletion()
-		if child is Area2D and "EnemyNode" in child.name and not child.is_queued_for_deletion():
-			var grid_pos = tilemap.local_to_map(tilemap.to_local(child.global_position))
-			enemy_positions[grid_pos] = child
+		# Cek apakah dia Mob atau Boss, dan pastikan dia GAK lagi sembunyi (visible = true)
+		if child is Area2D and ("MobNode" in child.name or "BossNode" in child.name) and not child.is_queued_for_deletion():
+			if child.visible: # Bos yang lagi sembunyi gak bakal bisa ditabrak/discanning
+				var grid_pos = tilemap.local_to_map(tilemap.to_local(child.global_position))
+				enemy_positions[grid_pos] = child
 
 func calculate_reachable_cells():
 	reachable_cells.clear()
@@ -130,20 +143,21 @@ func move_player_along_path(path):
 		
 		current_map_pos = next_tile
 		
-		if enemy_positions.has(current_map_pos):
-			# --- SIMPAN POSISI SEBELUM PINDAH SCENE ---
-			GlobalData.last_player_pos = current_map_pos
-			
-			var enemy_node = enemy_positions[current_map_pos]
-			GlobalData.current_enemy_name = enemy_node.name
-			GlobalData.use_ammo(1)
-			update_ammo_ui()
-			enemy_node.queue_free()
-			
-			await get_tree().create_timer(0.5).timeout
-			get_tree().change_scene_to_file("res://Scenes/map/BattlePhase.tscn")
-			return
-			
+	if enemy_positions.has(current_map_pos):
+				# --- SIMPAN POSISI SEBELUM PINDAH SCENE ---
+				GlobalData.last_player_pos = current_map_pos
+				
+				var enemy_node = enemy_positions[current_map_pos]
+				GlobalData.current_enemy_name = enemy_node.name
+				
+				# (BARIS GlobalData.use_ammo(1) DAN update_ammo_ui() DIHAPUS DARI SINI)
+				
+				enemy_node.queue_free()
+				
+				await get_tree().create_timer(0.5).timeout
+				get_tree().change_scene_to_file("res://Scenes/map/BattlePhase.tscn")
+				return
+				
 	is_moving = false
 	# --- UPDATE JUGA POSISI TERAKHIR SETIAP SELESAI GERAK BIASA ---
 	GlobalData.last_player_pos = current_map_pos

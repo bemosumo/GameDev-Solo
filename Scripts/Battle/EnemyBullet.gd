@@ -14,5 +14,5 @@ func _on_body_entered(body):
 	# Kalau nabrak player, kasih damage!
 	if body.is_in_group("player"):
 		if body.has_method("take_damage"):
-			body.take_damage(15.0) # Peluru musuh ngasih 15 damage
+			body.take_damage(10.0) # Peluru musuh ngasih 15 damage
 		queue_free() # Peluru merah hancur

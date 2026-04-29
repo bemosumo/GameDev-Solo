@@ -23,22 +23,38 @@ func take_damage(amount: float):
 		get_tree().change_scene_to_file("res://Scenes/map/TacticalMap.tscn")
 
 func _physics_process(_delta):
-	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-	velocity = direction * speed
+	# Kapal tetep cuma bisa gerak kiri-kanan
+	var direction = Input.get_axis("ui_left", "ui_right")
+	velocity = Vector2(direction * speed, 0)
 	move_and_slide()
 
-	# BATASIN AREA GERAK (Asumsi lebar layar 1152 dan tinggi 648)
-	# x maksimal 570 (setengah layar), y maksimal 600
-	global_position.x = clamp(global_position.x, 0, 570)
-	global_position.y = clamp(global_position.y, 0, 648)
+	global_position.x = clamp(global_position.x, 64, 1152 - 64)
+	global_position.y = 580
+	
+	# (Baris Input.is_action_just_pressed("ui_accept") HAPUS DARI SINI)
 
-	if Input.is_action_just_pressed("ui_accept"):
+# --- FUNGSI BARU UNTUK BACA KLIK MOUSE ---
+func _input(event):
+	# Mengecek apakah yang diklik adalah Tombol Kiri Mouse
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		shoot()
 
 func shoot():
 	var b = bullet_scene.instantiate()
 	get_parent().add_child(b)
-	b.position = self.position
+	b.global_position = self.global_position
+	
+	# 1. Minta Godot cari tau dimana koordinat kursor mouse lu di layar
+	var mouse_pos = get_global_mouse_position()
+	
+	# 2. Hitung garis lurus dari posisi kapal ke arah posisi kursor
+	var aim_direction = (mouse_pos - global_position).normalized()
+	
+	# 3. Kasih tau peluru buat terbang ke arah kursor tersebut
+	b.direction = aim_direction
+	
+	# 4. Putar gambar pelurunya biar moncongnya ngadep ke kursor
+	b.rotation = aim_direction.angle()
 	
 #func take_damage(amount: float):
 	#GlobalData.current_hp -= amount

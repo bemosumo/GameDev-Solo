@@ -5,8 +5,8 @@ var max_ammo: int = 5
 var current_ammo: int = 5
 
 # --- DATA STAT KAPAL ---
-var max_hp: int = 300
-var current_hp: int = 300
+var max_hp: int = 1000
+var current_hp: int = 1000
 var base_damage: float = 10.0
 
 # --- DATA PERSISTENCE (PENTING BUAT MAP) ---
