@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cdmhvkly7i1h7" path="res://Scripts/Battle/PlayerShip.gd" id="1_sj7t3"]
 [ext_resource type="Script" uid="uid://ddcdsd6ytmsti" path="res://Scripts/Battle/BattlePhase.gd" id="1_u2brl"]
 [ext_resource type="Texture2D" uid="uid://bceqt2woi6pgn" path="res://Assets/characters/5-3.png" id="3_j0p6c"]
-[ext_resource type="Texture2D" uid="uid://c86bejlo5k7ys" path="res://Assets/kapal/Anime Ocean BG 110.png" id="4_j0p6c"]
+[ext_resource type="Texture2D" uid="uid://dqyjssqt2omdm" path="res://Assets/kapal/4.png" id="4_j0p6c"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sj7t3"]
 size = Vector2(130, 128)
@@ -16,7 +16,7 @@ script = ExtResource("1_u2brl")
 
 [node name="PlayerShip" type="CharacterBody2D" parent="." unique_id=863159191]
 z_index = 1
-position = Vector2(584, 543)
+position = Vector2(579, 502)
 collision_mask = 3
 script = ExtResource("1_sj7t3")
 metadata/_edit_group_ = true
@@ -39,6 +39,6 @@ show_percentage = false
 autostart = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=10906081]
-position = Vector2(576.49994, 223.50005)
-scale = Vector2(1.5013019, 1.6582031)
+position = Vector2(588, -46.000015)
+scale = Vector2(0.55011374, 1.1526731)
 texture = ExtResource("4_j0p6c")

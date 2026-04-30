@@ -11,6 +11,7 @@ script = ExtResource("1_8td5p")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1977723093]
+modulate = Color(0.36078432, 0, 0, 1)
 scale = Vector2(0.49847093, 0.49847096)
 texture = ExtResource("2_etjyp")
 region_enabled = true
@@ -27,8 +28,10 @@ autostart = true
 position = Vector2(200, 31)
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=644798595]
+modulate = Color(1, 0, 0, 1)
 offset_left = -191.0
 offset_top = -117.0
 offset_right = 193.0
 offset_bottom = -90.0
 theme_override_colors/font_color = Color(0.9490196, 0, 0, 1)
+show_percentage = false

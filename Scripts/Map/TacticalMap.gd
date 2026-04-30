@@ -19,22 +19,25 @@ func _ready():
 		if node_musuh:
 			node_musuh.queue_free()
 
-	# --- 2. LOGIKA MUNCULIN BOSS ---
+# --- 2. LOGIKA MUNCULIN BOSS ---
 	var boss_node = get_node_or_null("BossNode")
 	if boss_node:
-		# Hitung ada berapa "MobNode" di daftar musuh yang udah mati
 		var mobs_defeated = 0
 		for enemy_name in GlobalData.defeated_enemies:
 			if "MobNode" in enemy_name:
 				mobs_defeated += 1
 		
-		# Kalau udah 7 atau lebih yang mati, Bos muncul! Kalau belum, sembunyi.
-		if mobs_defeated >= 7:
+		if mobs_defeated >= 4:
 			boss_node.show() 
+			boss_node.process_mode = Node.PROCESS_MODE_INHERIT
+			
+			# Otomatis cari tau posisi boss di grid buat dicat merah
+			var boss_grid_pos = tilemap.local_to_map(tilemap.to_local(boss_node.global_position))
+			merahin_area_boss(boss_grid_pos)
 		else:
 			boss_node.hide() 
+			boss_node.process_mode = Node.PROCESS_MODE_DISABLED
 	# --------------------------------
-
 	# LOGIKA POSISI BARU:
 	if GlobalData.last_player_pos != Vector2i(-1, -1):
 		current_map_pos = GlobalData.last_player_pos
@@ -65,11 +68,20 @@ func update_tactical_data():
 func scan_enemies():
 	enemy_positions.clear()
 	for child in get_children():
-		# Cek apakah dia Mob atau Boss, dan pastikan dia GAK lagi sembunyi (visible = true)
+		# Cek apakah dia Mob atau Boss, dan pastikan dia GAK lagi sembunyi
 		if child is Area2D and ("MobNode" in child.name or "BossNode" in child.name) and not child.is_queued_for_deletion():
-			if child.visible: # Bos yang lagi sembunyi gak bakal bisa ditabrak/discanning
+			if child.visible: 
 				var grid_pos = tilemap.local_to_map(tilemap.to_local(child.global_position))
-				enemy_positions[grid_pos] = child
+				
+				# LOGIKA BARU: Kalo dia Boss, daftarin 4 kotak sekaligus!
+				if "BossNode" in child.name:
+					enemy_positions[grid_pos] = child                           # Kiri Atas
+					enemy_positions[grid_pos + Vector2i(1, 0)] = child          # Kanan Atas
+					enemy_positions[grid_pos + Vector2i(0, 1)] = child          # Kiri Bawah
+					enemy_positions[grid_pos + Vector2i(1, 1)] = child          # Kanan Bawah
+				else:
+					# Kalo Kroco biasa, cukup 1 kotak aja
+					enemy_positions[grid_pos] = child
 
 func calculate_reachable_cells():
 	reachable_cells.clear()
@@ -162,3 +174,24 @@ func move_player_along_path(path):
 	# --- UPDATE JUGA POSISI TERAKHIR SETIAP SELESAI GERAK BIASA ---
 	GlobalData.last_player_pos = current_map_pos
 	update_tactical_data()
+
+# ==========================================
+# FUNGSI BUAT NGECAT 4 KOTAK BOSS
+# ==========================================
+func merahin_area_boss(kiri_atas: Vector2i):
+	# Sesuaikan 3 angka ini dengan TileSet lu!
+	var layer_map = 0 # Biasanya 0 atau 1
+	var source_id = 0 # ID atlas (coba cek di tab TileSet)
+	var atlas_merah = Vector2i(0, 0) # Koordinat kotak merah di DALAM gambar tileset
+	
+	# Bikin daftar 4 kotak (Formasi 2x2)
+	var area_boss = [
+		kiri_atas,
+		kiri_atas + Vector2i(1, 0),
+		kiri_atas + Vector2i(0, 1),
+		kiri_atas + Vector2i(1, 1)
+	]
+	
+	# Warnain keempat kotaknya ke TileMap
+	for cell in area_boss:
+		tilemap.set_cell(layer_map, cell, source_id, atlas_merah)

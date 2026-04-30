@@ -1,6 +1,5 @@
 extends Node2D
 
-# Pastikan path ini sesuai dengan nama folder tempat lu nyimpen 8 scene musuhnya!
 var carrier_scene = preload("res://Scenes/Enemies/EnemyCarrier.tscn")
 var hovercraft_scene = preload("res://Scenes/Enemies/EnemyHovercraft.tscn")
 var fregat_scene = preload("res://Scenes/Enemies/EnemyFregat.tscn")
@@ -14,70 +13,67 @@ var enemies_in_wave = 0
 
 func _ready():
 	setup_battle()
+	
+	# WAKTU TUNGGU DISAMAIN SAMA DURASI ANIMASI (6 Detik)
+	await get_tree().create_timer(6.0).timeout
+	
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		player.can_shoot = true
 
 func setup_battle():
 	var musuh = GlobalData.current_enemy_name
 	
-	# --- FORMASI PATROL FLEET ---
 	if "Patrol" in musuh:
-		spawn_unit(hovercraft_scene, Vector2(576, 120), "KIRI") 
-		spawn_unit(fregat_scene, Vector2(300, 80), "KANAN")  
-		spawn_unit(fregat_scene, Vector2(850, 80), "KIRI")
+		spawn_unit(hovercraft_scene, Vector2(576, 180), "KIRI") 
+		spawn_unit(fregat_scene, Vector2(200, 300), "KIRI")  
+		spawn_unit(fregat_scene, Vector2(950, 300), "KIRI")
 		enemies_in_wave = 3
-		
-	# --- FORMASI HEAVY STRIKE ---
 	elif "Cruiser" in musuh:
-		spawn_unit(cruiser_scene, Vector2(576, 100), "KANAN")
-		spawn_unit(stealth_scene, Vector2(300, 180), "KIRI")
-		spawn_unit(stealth_scene, Vector2(850, 180), "KANAN")
+		spawn_unit(cruiser_scene, Vector2(576, 160), "KIRI")
+		spawn_unit(stealth_scene, Vector2(250, 280), "KIRI")
+		spawn_unit(stealth_scene, Vector2(900, 280), "KIRI")
 		enemies_in_wave = 3
-		
-	# --- FORMASI DEEP SEA CARRIER ---
 	elif "Carrier" in musuh:
-		spawn_unit(carrier_scene, Vector2(576, 80), "KIRI")
-		spawn_unit(sub_scene, Vector2(200, 200), "KANAN")
-		spawn_unit(sub_scene, Vector2(950, 200), "KIRI")
+		spawn_unit(carrier_scene, Vector2(576, 150), "KIRI")
+		spawn_unit(sub_scene, Vector2(200, 310), "KIRI")
+		spawn_unit(sub_scene, Vector2(950, 310), "KIRI")
 		enemies_in_wave = 3
-		
-	# --- FORMASI INVASION FORCE (Pakai Rintangan) ---
 	elif "Invasion" in musuh:
-		spawn_unit(fregat_scene, Vector2(576, 150), "KANAN")
-		spawn_unit(mine_scene, Vector2(300, 250), "KIRI")
-		spawn_unit(buoy_scene, Vector2(850, 250), "KANAN")
+		spawn_unit(fregat_scene, Vector2(576, 180), "KIRI")
+		spawn_unit(fregat_scene, Vector2(250, 300), "KIRI")
+		spawn_unit(fregat_scene, Vector2(900, 300), "KIRI")
 		enemies_in_wave = 3
-		
-	# --- DEFAULT JAGA-JAGA ---
 	else:
-		spawn_unit(hovercraft_scene, Vector2(576, 150), "KIRI")
+		spawn_unit(hovercraft_scene, Vector2(576, 180), "KIRI")
 		enemies_in_wave = 1
 
+	# PANGGIL DI SINI BIAR SEMUA NODE KEBAGIAN HUJAN RINTANGAN
+	mulai_hujan_rintangan()
 
-# Fungsi buat nurunin musuh dari pinggir layar trus berenti di posisi
-func spawn_unit(scene_musuh, pos_tujuan: Vector2, arah_datang: String):
-	if scene_musuh == null:
-		print("Error: Scene musuh belum di-preload, path salah!")
-		return
-		
+
+func spawn_unit(scene_musuh, pos_tujuan: Vector2, _arah_datang: String):
+	if scene_musuh == null: return
 	var enemy = scene_musuh.instantiate()
 	add_child(enemy)
 	
-	# Tentukan posisi awal di luar layar (Kiri = -200, Kanan = 1350)
-	var pos_awal_x = -200 if arah_datang == "KIRI" else 1350
+	# POSISI AWAL DIPAKSA DARI KIRI JAUH (-300) BIAR GAK KELIATAN TIBA-TIBA MUNCUL
+	var pos_awal_x = -300 
 	enemy.global_position = Vector2(pos_awal_x, pos_tujuan.y)
 	
-	# Sambungin sinyal mati biar gamenya tau kapan menang
 	enemy.defeated.connect(_on_enemy_defeated)
 	
-	# Bikin animasi jalan biar mulus
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_QUART)
 	tween.set_ease(Tween.EASE_OUT)
-	tween.tween_property(enemy, "global_position", pos_tujuan, 2.0)
 	
-	# Pas udah sampe posisi, kasih aba-aba boleh nembak
+	# DURASI ANIMASI DIPERLAMBAT JADI 6.0 DETIK
+	tween.tween_property(enemy, "global_position", pos_tujuan, 6.0)
+	
 	tween.tween_callback(func(): 
-		if "can_shoot" in enemy:
-			enemy.can_shoot = true
+		if is_instance_valid(enemy):
+			if "can_shoot" in enemy: 
+				enemy.can_shoot = true
 	)
 
 func _on_enemy_defeated():
@@ -86,16 +82,46 @@ func _on_enemy_defeated():
 		finish_battle()
 
 func finish_battle():
-	print("Semua Musuh Hancur! Balik ke Map.")
-	
-	# Kurangin Ammo sesuai mekanik lu
 	if GlobalData.has_method("use_ammo"):
 		GlobalData.use_ammo(1) 
 	
-	# Catat musuh yang udah dikalahin biar pas balik ke map node-nya ilang
 	if GlobalData.current_enemy_name != "":
 		GlobalData.defeated_enemies.append(GlobalData.current_enemy_name)
 		
-	# Jeda dikit sebelum layar pindah
 	await get_tree().create_timer(1.0).timeout
 	get_tree().change_scene_to_file("res://Scenes/map/TacticalMap.tscn")
+
+# ==========================================
+# SISTEM HUJAN RINTANGAN (OBSTACLE)
+# ==========================================
+var obstacle_timer: Timer
+
+func mulai_hujan_rintangan():
+	# Tunggu 6 detik biar kapalnya selesai parkir dulu
+	await get_tree().create_timer(6.0).timeout
+	
+	obstacle_timer = Timer.new()
+	obstacle_timer.wait_time = 1.5 
+	obstacle_timer.autostart = true
+	obstacle_timer.timeout.connect(_spawn_random_obstacle)
+	add_child(obstacle_timer)
+
+func _spawn_random_obstacle():
+	# Cari semua kapal musuh yang MASIH HIDUP di medan tempur
+	var enemies = get_tree().get_nodes_in_group("enemy")
+	
+	# Kalau musuhnya udah hancur semua, berhenti nebar ranjau
+	if enemies.size() == 0:
+		return
+		
+	# Pilih SATU kapal musuh secara acak buat jadi penebar ranjau detik ini
+	var kapal_penebar = enemies[randi() % enemies.size()]
+	
+	# Pastikan kapalnya beneran masih ada (belum meledak pas mau nebar)
+	if is_instance_valid(kapal_penebar):
+		var is_mine = randi() % 2 == 0 
+		var obs = mine_scene.instantiate() if is_mine else buoy_scene.instantiate()
+		add_child(obs)
+		
+		# Keluarin rintangan tepat di koordinat kapal yang kepilih!
+		obs.global_position = kapal_penebar.global_position

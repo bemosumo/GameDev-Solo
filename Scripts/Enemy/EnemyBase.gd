@@ -3,7 +3,7 @@ class_name EnemyBase
 
 signal defeated
 
-@export var hp: float = 60.0
+@export var hp: float = 100.0
 @export var speed: float = 200.0
 var enemy_bullet_scene = preload("res://Scenes/map/EnemyBullet.tscn")
 
@@ -44,6 +44,6 @@ func shoot():
 		get_parent().add_child(b)
 		b.global_position = muzzle.global_position
 		
-		var aim_direction = (player.global_position - global_position).normalized()
+		var aim_direction = (player.global_position - muzzle.global_position).normalized()
 		b.direction = aim_direction
 		b.rotation = aim_direction.angle()

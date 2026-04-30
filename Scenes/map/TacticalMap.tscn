@@ -3911,8 +3911,8 @@ position = Vector2(1085, 190)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="MobNode_Patrol_1" unique_id=704574524]
-position = Vector2(3.0000372, 2.0000048)
-scale = Vector2(0.23300622, 0.21636286)
+position = Vector2(2.3699608, 1.4999986)
+scale = Vector2(0.2860577, 0.26562497)
 texture = ExtResource("11_t28v1")
 region_enabled = true
 region_rect = Rect2(1548.2926, 2628.6204, 674.2511, 576.38086)
@@ -3926,8 +3926,8 @@ position = Vector2(450, 961)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="MobNode_Cruiser_1" unique_id=2074980168]
-position = Vector2(-2.000002, -4.000017)
-scale = Vector2(0.22702199, 0.22702199)
+position = Vector2(-3.004558, -14.695322)
+scale = Vector2(0.26402998, 0.26402998)
 texture = ExtResource("11_t28v1")
 region_enabled = true
 region_rect = Rect2(194.98882, 152.80518, 835.0131, 578.2313)
@@ -3941,8 +3941,8 @@ position = Vector2(192, 704)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="MobNode_Carrier_1" unique_id=358361496]
-position = Vector2(-2, 1.9073486e-05)
-scale = Vector2(0.15992644, 0.15992644)
+position = Vector2(-1.2305374, 0.5000124)
+scale = Vector2(0.20826723, 0.20826723)
 texture = ExtResource("11_t28v1")
 region_enabled = true
 region_rect = Rect2(229.13402, 2586.9365, 968.7295, 629.7788)
@@ -3956,8 +3956,8 @@ position = Vector2(66, 321)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="MobNode_Invasion_1" unique_id=673262156]
-position = Vector2(1, -1.9999866)
-scale = Vector2(0.19257672, 0.19257674)
+position = Vector2(20.232574, -2.5000043)
+scale = Vector2(0.24729244, 0.24729246)
 texture = ExtResource("11_t28v1")
 region_enabled = true
 region_rect = Rect2(2541.731, 2665.8003, 703.80396, 554.43555)
@@ -3971,8 +3971,8 @@ position = Vector2(1344, 961)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="MobNode_Patrol_2" unique_id=2014496289]
-position = Vector2(1.0000334, -0.99999475)
-scale = Vector2(0.20826598, 0.20826599)
+position = Vector2(-14.660261, -1.9999924)
+scale = Vector2(0.255083, 0.255083)
 texture = ExtResource("11_t28v1")
 region_enabled = true
 region_rect = Rect2(1552.9801, 2644.82, 669.7831, 541.2854)
@@ -3986,8 +3986,8 @@ position = Vector2(1088, 578)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="MobNode_Carrier_2" unique_id=766195209]
-position = Vector2(0.91064453, -0.25)
-scale = Vector2(0.15390624, 0.15390627)
+position = Vector2(-0.9819088, -1.4999838)
+scale = Vector2(0.20468743, 0.20468746)
 texture = ExtResource("11_t28v1")
 region_enabled = true
 region_rect = Rect2(222.48785, 2584.5532, 969.5986, 640.2344)
@@ -4001,8 +4001,8 @@ position = Vector2(578, 568)
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="MobNode_Cruiser_2" unique_id=133146255]
-position = Vector2(-2.7656555e-05, -3.0000014)
-scale = Vector2(0.19578175, 0.19578181)
+position = Vector2(-2.1705322, -4.5000076)
+scale = Vector2(0.24911653, 0.2491166)
 texture = ExtResource("11_t28v1")
 region_enabled = true
 region_rect = Rect2(1285.239, 205.8936, 819.7971, 566.8203)

@@ -10,3 +10,11 @@ func _process(delta):
 	# Hapus peluru kalau keluar layar (sesuain ukurannya)
 	if position.y > 800 or position.y < -100 or position.x < -100 or position.x > 1250:
 		queue_free()
+
+func _on_body_entered(body):
+	# Cek apakah yang ditabrak itu ada di grup "player"
+	if body.is_in_group("player"):
+		# Kasih damage ke player (misal damage-nya 10)
+		body.take_damage(10.0) 
+		# Hancurkan peluru musuhnya
+		queue_free()

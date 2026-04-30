@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 var speed: float = 400.0
 var bullet_scene = preload("res://Scenes/map/Bullet.tscn")
-
+var can_shoot: bool = false
 @onready var health_bar = $HealthBar
 
 func _ready():
@@ -35,9 +35,10 @@ func _physics_process(_delta):
 
 # --- FUNGSI BARU UNTUK BACA KLIK MOUSE ---
 func _input(event):
-	# Mengecek apakah yang diklik adalah Tombol Kiri Mouse
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		shoot()
+		# TAMBAHAN: Cek dulu boleh nembak apa belum
+		if can_shoot: 
+			shoot()
 
 func shoot():
 	var b = bullet_scene.instantiate()

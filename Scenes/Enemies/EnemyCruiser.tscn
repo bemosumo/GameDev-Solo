@@ -11,6 +11,7 @@ script = ExtResource("1_kjoir")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1200592120]
+modulate = Color(0.36078432, 0, 0, 1)
 texture = ExtResource("2_3db5p")
 region_enabled = true
 region_rect = Rect2(270.62714, 1552.2014, 2118.281, 541.6941)
@@ -20,13 +21,16 @@ position = Vector2(-9, 11.5)
 shape = SubResource("RectangleShape2D_4jnve")
 
 [node name="ShootTimer" type="Timer" parent="." unique_id=1695906228]
+autostart = true
 
 [node name="Muzzle" type="Marker2D" parent="." unique_id=2084323047]
 position = Vector2(-794, 111)
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1634714262]
+modulate = Color(1, 0, 0, 1)
 offset_left = -333.0
 offset_top = -292.0
 offset_right = 256.0
 offset_bottom = -265.0
 theme_override_colors/font_color = Color(0.9490196, 0, 0, 1)
+show_percentage = false

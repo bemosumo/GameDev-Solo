@@ -11,22 +11,28 @@ script = ExtResource("1_q2r2m")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1200592120]
+modulate = Color(0.36078432, 0, 0, 1)
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("1_8wji7")
 region_enabled = true
 region_rect = Rect2(227.1514, 992.3553, 1123.1302, 446.33685)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1864063815]
 position = Vector2(1, 0.5)
+scale = Vector2(0.7, 0.7)
 shape = SubResource("RectangleShape2D_4jnve")
 
 [node name="ShootTimer" type="Timer" parent="." unique_id=1695906228]
+autostart = true
 
 [node name="Muzzle" type="Marker2D" parent="." unique_id=2084323047]
 position = Vector2(134, -12)
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1338362008]
-offset_left = -213.0
-offset_top = -243.0
-offset_right = 241.0
-offset_bottom = -216.0
+modulate = Color(1, 0, 0, 1)
+offset_left = -204.0
+offset_top = -181.0
+offset_right = 250.0
+offset_bottom = -154.0
 theme_override_colors/font_color = Color(0.9490196, 0, 0, 1)
+show_percentage = false

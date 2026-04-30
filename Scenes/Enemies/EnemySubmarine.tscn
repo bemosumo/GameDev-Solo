@@ -4,20 +4,21 @@
 [ext_resource type="Texture2D" uid="uid://cfb5af6duwfdg" path="res://Assets/kapal/erasebg-transformed (1).png" id="2_1e0ea"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w3n6c"]
-size = Vector2(891, 145)
+size = Vector2(1804.9999, 266.66666)
 
 [node name="EnemySubmarine" type="CharacterBody2D" unique_id=223071852]
 script = ExtResource("1_2pkyt")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1977723093]
-scale = Vector2(0.49847093, 0.49847096)
+modulate = Color(0.36078432, 0, 0, 1)
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("2_1e0ea")
 region_enabled = true
 region_rect = Rect2(267.5584, 2766.844, 1792.1836, 281.5083)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=291513650]
-position = Vector2(1.5, -8.5)
+scale = Vector2(0.7, 0.7)
 shape = SubResource("RectangleShape2D_w3n6c")
 
 [node name="ShootTimer" type="Timer" parent="." unique_id=250719218]
@@ -27,8 +28,10 @@ autostart = true
 position = Vector2(-96, -7)
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1226243239]
-offset_left = -179.0
-offset_top = -104.0
-offset_right = 208.0
-offset_bottom = -77.0
+modulate = Color(1, 0, 0, 1)
+offset_left = -183.0
+offset_top = -120.0
+offset_right = 204.0
+offset_bottom = -93.0
 theme_override_colors/font_color = Color(0.9490196, 0, 0, 1)
+show_percentage = false

@@ -1,12 +1,12 @@
 [gd_scene format=3 uid="uid://co7a77i5pswfo"]
 
-[ext_resource type="Script" uid="uid://cyo8pdw2cife4" path="res://Scripts/Enemy/EnemyBase.gd" id="1_mhnqm"]
+[ext_resource type="Script" uid="uid://cxu7lidsm1qso" path="res://Scripts/Enemy/Obstacle.gd" id="1_mhnqm"]
 [ext_resource type="Texture2D" uid="uid://cfb5af6duwfdg" path="res://Assets/kapal/erasebg-transformed (1).png" id="2_5yauk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w3n6c"]
 size = Vector2(93, 145)
 
-[node name="ObstacleBuoy" type="CharacterBody2D" unique_id=556709863]
+[node name="ObstacleBuoy" type="Area2D" unique_id=1116324449]
 script = ExtResource("1_mhnqm")
 metadata/_edit_group_ = true
 
@@ -20,9 +20,4 @@ region_rect = Rect2(554.31714, 2335.941, 198.7699, 283.2146)
 position = Vector2(0.5, -8.5)
 shape = SubResource("RectangleShape2D_w3n6c")
 
-[node name="HealthBar" type="ProgressBar" parent="." unique_id=1019807952]
-offset_left = -43.0
-offset_top = -99.0
-offset_right = 47.0
-offset_bottom = -72.0
-theme_override_colors/font_color = Color(0.9490196, 0, 0, 1)
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
