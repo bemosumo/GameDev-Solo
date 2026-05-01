@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Azur Lane"
-run/main_scene="uid://cjdbp5j5ryon1"
+run/main_scene="uid://dx70bjyjvsg5r"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

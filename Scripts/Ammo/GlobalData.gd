@@ -13,6 +13,9 @@ var base_damage: float = 10.0
 var defeated_enemies: Array = []
 var current_enemy_name: String = ""
 var last_player_pos: Vector2i = Vector2i(-1, -1)
+var star_stage_cleared: bool = false
+var star_boss_defeated: bool = false
+var star_all_enemies: bool = false
 
 func use_ammo(amount: int = 1):
 	current_ammo -= amount

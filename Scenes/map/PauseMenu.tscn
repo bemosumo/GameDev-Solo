@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://bkxf0xbsrnpq5"]
+
+[ext_resource type="Script" uid="uid://jqn4vr0kdt35" path="res://Scripts/Map/PauseMenu.gd" id="1_rg0wl"]
+[ext_resource type="FontFile" uid="uid://bs1x55h3t01ye" path="res://Assets/font/Goldman-Bold.ttf" id="2_21505"]
+[ext_resource type="Texture2D" uid="uid://ckyihpv4c7uur" path="res://Assets/kapal/stars.png" id="3_gqkss"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mciij"]
+atlas = ExtResource("3_gqkss")
+region = Rect2(0, 0, 117.68198, 111)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v2by7"]
+atlas = ExtResource("3_gqkss")
+region = Rect2(0, 0, 116.46985, 111)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rjbe3"]
+atlas = ExtResource("3_gqkss")
+region = Rect2(0, 0, 117.0759, 111)
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=2066382079]
+process_mode = 3
+script = ExtResource("1_rg0wl")
+
+[node name="TombolPause" type="Button" parent="." unique_id=727272014]
+offset_left = 1064.0
+offset_top = 16.0
+offset_right = 1136.0
+offset_bottom = 44.0
+theme_override_fonts/font = ExtResource("2_21505")
+text = "PAUSE"
+
+[node name="PopupPanel" type="Panel" parent="." unique_id=58021829]
+offset_left = 264.0
+offset_top = 128.0
+offset_right = 896.0
+offset_bottom = 512.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PopupPanel" unique_id=574315495]
+layout_mode = 0
+offset_right = 632.0
+offset_bottom = 384.0
+
+[node name="Label" type="Label" parent="PopupPanel/VBoxContainer" unique_id=690558607]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_21505")
+theme_override_font_sizes/font_size = 50
+text = "PAUSED"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="PopupPanel/VBoxContainer" unique_id=1645386709]
+layout_mode = 2
+size_flags_vertical = 7
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PopupPanel/VBoxContainer" unique_id=972531497]
+layout_mode = 2
+theme_override_constants/separation = 67
+alignment = 1
+
+[node name="Star1" type="TextureRect" parent="PopupPanel/VBoxContainer/HBoxContainer" unique_id=419803390]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = SubResource("AtlasTexture_mciij")
+expand_mode = 1
+
+[node name="Star2" type="TextureRect" parent="PopupPanel/VBoxContainer/HBoxContainer" unique_id=1532294274]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = SubResource("AtlasTexture_v2by7")
+expand_mode = 1
+
+[node name="Star3" type="TextureRect" parent="PopupPanel/VBoxContainer/HBoxContainer" unique_id=132775452]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = SubResource("AtlasTexture_rjbe3")
+expand_mode = 1
+
+[node name="Control2" type="Control" parent="PopupPanel/VBoxContainer" unique_id=385740196]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.47
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PopupPanel/VBoxContainer" unique_id=104389172]
+layout_mode = 2
+
+[node name="BtnResume" type="Button" parent="PopupPanel/VBoxContainer/HBoxContainer2" unique_id=6184672]
+modulate = Color(0.50377053, 1.0894411, 3.6091864, 1)
+custom_minimum_size = Vector2(315, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.16470589, 0.54509807, 0.6431373, 1)
+theme_override_fonts/font = ExtResource("2_21505")
+text = "RESUME"
+
+[node name="BtnQuit" type="Button" parent="PopupPanel/VBoxContainer/HBoxContainer2" unique_id=1749811646]
+modulate = Color(1, 0, 0, 1)
+custom_minimum_size = Vector2(315, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5803922, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_21505")
+text = "Quit"
+
+[connection signal="pressed" from="TombolPause" to="." method="_on_tombol_pause_pressed"]
+[connection signal="pressed" from="PopupPanel/VBoxContainer/HBoxContainer2/BtnResume" to="." method="_on_btn_resume_pressed"]
+[connection signal="pressed" from="PopupPanel/VBoxContainer/HBoxContainer2/BtnQuit" to="." method="_on_btn_quit_pressed"]

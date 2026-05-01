@@ -14,6 +14,10 @@
 [ext_resource type="Texture2D" uid="uid://vj27npkndxox" path="res://Assets/kapal/shiper_mix_02.png" id="12_4rl6s"]
 [ext_resource type="PackedScene" uid="uid://cj5m6bxtkslux" path="res://Scenes/map/ItemMedkit.tscn" id="13_pcq44"]
 [ext_resource type="PackedScene" uid="uid://helsop0ys7k8" path="res://Scenes/map/ItemAmmo.tscn" id="14_actv3"]
+[ext_resource type="Texture2D" uid="uid://ckyihpv4c7uur" path="res://Assets/kapal/stars.png" id="15_actv3"]
+[ext_resource type="AudioStream" uid="uid://x3k8vse5hdqu" path="res://Assets/Audio/universfield-tense-atmosphere-129627.mp3" id="16_cggnl"]
+[ext_resource type="AudioStream" uid="uid://e1g8dibadvnu" path="res://Assets/Audio/freesound_community-led_mixing_with_moonlight-24965.mp3" id="17_425ba"]
+[ext_resource type="AudioStream" uid="uid://w7sw0qcmkh3v" path="res://Assets/Audio/freesound_community-siren-alert-96052.mp3" id="18_64ug7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p1neq"]
 texture = ExtResource("9_uv678")
@@ -3862,6 +3866,18 @@ size = Vector2(112, 104)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2547t"]
 size = Vector2(269.57144, 158.42863)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_cggnl"]
+atlas = ExtResource("15_actv3")
+region = Rect2(0, 0, 117.68198, 111)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uv678"]
+atlas = ExtResource("15_actv3")
+region = Rect2(0, 0, 116.46985, 111)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_425ba"]
+atlas = ExtResource("15_actv3")
+region = Rect2(0, 0, 117.0759, 111)
+
 [node name="TacticalMap" type="TileMapLayer" unique_id=1957835254]
 script = ExtResource("1_he741")
 
@@ -4035,6 +4051,49 @@ scale = Vector2(0.7, 0.7)
 z_index = 1
 position = Vector2(64, 64)
 scale = Vector2(0.7, 0.7)
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=371494720]
+
+[node name="StarUIContainer" type="HBoxContainer" parent="UILayer" unique_id=978510343]
+custom_minimum_size = Vector2(40, 40)
+offset_left = 987.0
+offset_top = 13.0
+offset_right = 1301.0
+offset_bottom = 73.0
+scale = Vector2(0.5, 0.5)
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="Star1" type="TextureRect" parent="UILayer/StarUIContainer" unique_id=1160928138]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = SubResource("AtlasTexture_cggnl")
+expand_mode = 1
+
+[node name="Star2" type="TextureRect" parent="UILayer/StarUIContainer" unique_id=527194001]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = SubResource("AtlasTexture_uv678")
+expand_mode = 1
+
+[node name="Star3" type="TextureRect" parent="UILayer/StarUIContainer" unique_id=364295012]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = SubResource("AtlasTexture_425ba")
+expand_mode = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=591631670]
+stream = ExtResource("16_cggnl")
+volume_db = -10.0
+autoplay = true
+
+[node name="SFX_Move" type="AudioStreamPlayer2D" parent="." unique_id=1027962145]
+stream = ExtResource("17_425ba")
+volume_db = -4.986
+
+[node name="SFX_Alarm" type="AudioStreamPlayer2D" parent="." unique_id=1356310648]
+stream = ExtResource("18_64ug7")
+volume_db = -3.65
 
 [connection signal="body_entered" from="MobNode_Patrol_1" to="." method="_on_enemy_node_body_entered"]
 [connection signal="body_entered" from="MobNode_Cruiser_1" to="." method="_on_enemy_node_3_body_entered"]

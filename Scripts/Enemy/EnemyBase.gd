@@ -76,6 +76,7 @@ func take_damage(amount: float):
 			ledakan.global_position = self.global_position 
 		
 		defeated.emit()
+		get_parent().get_node("SFX_Explode").play()
 		queue_free()
 
 func _on_timer_timeout():

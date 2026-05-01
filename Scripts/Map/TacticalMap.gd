@@ -4,6 +4,9 @@ extends Node2D
 @onready var layer_pulau = $Pulau
 @onready var player = $PlayerCursor
 @onready var ammo_label = $PlayerCursor/AmmoLabel # Ambil referensi ke Label Ammo
+@onready var star1 = $UILayer/StarUIContainer/Star1
+@onready var star2 = $UILayer/StarUIContainer/Star2
+@onready var star3 = $UILayer/StarUIContainer/Star3
 
 var is_moving = false
 var current_map_pos = Vector2i()
@@ -13,6 +16,7 @@ var reachable_cells = {}
 var enemy_positions = {}
 
 func _ready():
+	update_bintang_ui()
 	# 1. Hapus musuh yang sudah mati (Persistence)
 	for enemy_name in GlobalData.defeated_enemies:
 		var node_musuh = get_node_or_null(enemy_name)
@@ -27,12 +31,13 @@ func _ready():
 			if "MobNode" in enemy_name:
 				mobs_defeated += 1
 		
-		if mobs_defeated >= 0:
+		if mobs_defeated >= 4:
 			boss_node.show() 
 			boss_node.process_mode = Node.PROCESS_MODE_INHERIT
 			
 			# Langsung panggil fungsinya
 			merahin_area_boss()
+			cinematic_boss_map_intro(boss_node)
 		else:
 			boss_node.hide() 
 			boss_node.process_mode = Node.PROCESS_MODE_DISABLED
@@ -171,6 +176,7 @@ func _unhandled_input(event):
 
 func move_player_along_path(path):
 	is_moving = true
+	$SFX_Move.play()
 	queue_redraw()
 	
 	for next_tile in path:
@@ -212,7 +218,7 @@ func move_player_along_path(path):
 		var enemy_node = enemy_positions[current_map_pos]
 		GlobalData.current_enemy_name = enemy_node.name
 		enemy_node.queue_free()
-		
+		$SFX_Alarm.play()
 		await get_tree().create_timer(0.5).timeout
 		get_tree().change_scene_to_file("res://Scenes/map/BattlePhase.tscn")
 		return
@@ -237,3 +243,50 @@ func merahin_area_boss():
 	# Warnain keenam kotaknya ke TileMapLayer
 	for cell in area_boss:
 		tilemap.set_cell(cell, source_id, atlas_merah)
+
+func update_bintang_ui():
+	# BINTANG 1: Clear Stage
+	if GlobalData.star_stage_cleared:
+		star1.modulate = Color(1, 1, 1) # Nyala (Terang)
+	else:
+		star1.modulate = Color(0.2, 0.2, 0.2) # Gelap
+		
+	# BINTANG 2: Kalahkan Boss
+	if GlobalData.star_boss_defeated:
+		star2.modulate = Color(1, 1, 1)
+	else:
+		star2.modulate = Color(0.2, 0.2, 0.2)
+		
+	# BINTANG 3: Kalahkan Semua Musuh
+	if GlobalData.star_all_enemies:
+		star3.modulate = Color(1, 1, 1)
+	else:
+		star3.modulate = Color(0.2, 0.2, 0.2)
+
+func cinematic_boss_map_intro(boss_node):
+	is_moving = true # Kunci kapal player biar gak bisa jalan
+	
+	# Ambil kamera yang ada di PlayerCursor
+	var kamera = $PlayerCursor/Camera2D
+	
+	# Kalau ternyata gak ada kamera, batalin aja biar gak error
+	if kamera == null:
+		is_moving = false
+		return
+		
+	var tween = get_tree().create_tween()
+	
+	# Kamera geser ke Boss (1 detik)
+	tween.tween_property(kamera, "global_position", boss_node.global_position, 1.0).set_trans(Tween.TRANS_SINE)
+	
+	# Kamera diem di Boss (2 detik)
+	tween.tween_interval(2.0)
+	
+	# Kamera balik ke PlayerCursor (1 detik)
+	tween.tween_property(kamera, "global_position", $PlayerCursor.global_position, 1.0).set_trans(Tween.TRANS_SINE)
+	
+	await tween.finished
+	
+	# Reset posisi biar pas di tengah player lagi
+	kamera.position = Vector2(0, 0)
+	is_moving = false # Buka kuncian, player bisa jalan lagi

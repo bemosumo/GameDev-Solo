@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bedvc2rxfdtbp" path="res://Scripts/Battle/EnemyBullet.gd" id="1_1ll1p"]
 [ext_resource type="Texture2D" uid="uid://lapog0752o2b" path="res://Assets/characters/FoxShotSheet.png" id="2_1ll1p"]
+[ext_resource type="AudioStream" uid="uid://2beksdv7ho47" path="res://Assets/Audio/freesound_community-laser-104024.mp3" id="3_hcig1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n85bw"]
 size = Vector2(11.333334, 16.333334)
@@ -20,5 +21,10 @@ region_rect = Rect2(0.7698364, 112.5645, 11.100166, 17.191727)
 rotation = 1.5707964
 scale = Vector2(3, 3)
 shape = SubResource("RectangleShape2D_n85bw")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=375028715]
+stream = ExtResource("3_hcig1")
+volume_db = -2.137
+autoplay = true
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -15,9 +15,12 @@ var current_wave = 1
 var is_battle_finished: bool = false
 
 func _ready():
+	if has_node("Winlayer"):
+		$Winlayer.hide()
+		
 	setup_battle()
 	
-	# WAKTU TUNGGU DISAMAIN SAMA DURASI ANIMASI (6 Detik)
+	# WAKTU TUNGGU DISAMAIN SAMA DURASI ANIMASI (4 Detik)
 	await get_tree().create_timer(4.0).timeout
 	
 	var player = get_tree().get_first_node_in_group("player")
@@ -81,7 +84,7 @@ func spawn_unit(scene_musuh, pos_tujuan: Vector2, _arah_datang: String):
 	tween.set_ease(Tween.EASE_OUT)
 	
 	# DURASI ANIMASI DIPERLAMBAT JADI 6.0 DETIK
-	tween.tween_property(enemy, "global_position", pos_tujuan, 6.0)
+	tween.tween_property(enemy, "global_position", pos_tujuan, 4.0)
 	
 	tween.tween_callback(func(): 
 		if is_instance_valid(enemy):
@@ -117,6 +120,25 @@ func finish_battle():
 		
 	is_battle_finished = true # Kunci gemboknya sekarang
 	
+	var musuh = GlobalData.current_enemy_name
+	
+	# --- KONDISI KHUSUS KALAU NGALAHIN BOSS ---
+	if "Boss" in musuh:
+		GlobalData.star_boss_defeated = true
+		
+		# (Opsional) Langsung kasih 3 Bintang
+		GlobalData.star_stage_cleared = true 
+		GlobalData.star_all_enemies = true 
+		
+		# [PERBAIKAN] Panggil Winlayer dengan huruf 'l' kecil
+		if has_node("Winlayer"):
+			$Winlayer.show()
+			
+		# Bekuin gamenya biar dramatis
+		get_tree().paused = true 
+		return # Stop kodingannya sampai sini, tunggu pemain klik tombol Return
+		
+	# --- KONDISI MUSUH BIASA (Balik ke Tactical Map) ---
 	if GlobalData.has_method("use_ammo"):
 		GlobalData.use_ammo(1) 
 	
@@ -125,10 +147,8 @@ func finish_battle():
 		
 	await get_tree().create_timer(1.0).timeout
 	
-	# Pengecekan ekstra: pastiin get_tree() beneran masih ada sebelum pindah
 	if get_tree():
 		get_tree().change_scene_to_file("res://Scenes/map/TacticalMap.tscn")
-
 # ==========================================
 # SISTEM HUJAN RINTANGAN (OBSTACLE)
 # ==========================================
@@ -170,24 +190,49 @@ func panggil_boss():
 	var boss = boss_scene.instantiate()
 	add_child(boss)
 	
-	# MUNCUL DARI ATAS LAYAR (Sumbu Y Minus)
-	var pos_awal = Vector2(576, -500) # Dibikin lebih tinggi karena badannya gede
-	var pos_tujuan = Vector2(576, 50) # Berhenti di posisi kapal induk
+	# Boss langsung turun dari atas layar
+	var pos_awal = Vector2(576, -500)
+	var pos_tujuan = Vector2(576, 50)
 	
 	boss.global_position = pos_awal
 	
-	# DAFTARIN BOSS KE ARRAY ABSEN
 	active_enemies.append(boss)
 	boss.defeated.connect(_on_unit_destroyed.bind(boss))
 	
 	var tween = create_tween()
 	tween.set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 	
-	# Turun dengan gaya (6 detik)
+	# Animasi boss turun (6 detik)
 	tween.tween_property(boss, "global_position", pos_tujuan, 6.0)
 	
 	tween.tween_callback(func(): 
 		if is_instance_valid(boss):
 			if "can_shoot" in boss: 
 				boss.can_shoot = true
-	);
+	)
+
+# --- Fungsi ini dipanggil pas tombol RETURN TO BASE diklik ---
+# --- Fungsi ini dipanggil pas tombol RETURN TO BASE diklik ---
+func _on_btn_return_main_menu_pressed():
+	get_tree().paused = false # Unpause dulu
+	
+	# 1. Reset Bintang
+	GlobalData.star_stage_cleared = false
+	GlobalData.star_boss_defeated = false
+	GlobalData.star_all_enemies = false
+	
+	# 2. RESET MAP (Roguelike Reset)
+	# Balikin posisi kapal ke titik Start awal (Vector2i(-1, -1) ini trigger default lu di TacticalMap)
+	GlobalData.last_player_pos = Vector2i(-1, -1) 
+	
+	# Hapus daftar musuh yang udah mati biar mereka respawn lagi pas deploy
+	GlobalData.defeated_enemies.clear()
+	
+	# 3. RESET STATUS KAPAL PLAYER (Biar seger pas deploy lagi)
+	if "max_hp" in GlobalData:
+		GlobalData.current_hp = GlobalData.max_hp
+	if "max_ammo" in GlobalData:
+		GlobalData.current_ammo = GlobalData.max_ammo
+	
+	# 4. Balik ke Main Menu
+	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
