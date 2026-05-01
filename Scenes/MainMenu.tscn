@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://dx70bjyjvsg5r"]
+
+[ext_resource type="Texture2D" uid="uid://c86bejlo5k7ys" path="res://Assets/kapal/Anime Ocean BG 110.png" id="1_853f1"]
+[ext_resource type="FontFile" uid="uid://bs1x55h3t01ye" path="res://Assets/font/Goldman-Bold.ttf" id="2_8saeu"]
+
+[node name="MainMenu" type="Control" unique_id=650351445]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=78989537]
+modulate = Color(0.3529412, 0.3529412, 0.34509805, 1)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_853f1")
+
+[node name="TitleLabel" type="Label" parent="." unique_id=1845724399]
+layout_mode = 0
+offset_left = 252.0
+offset_top = 135.0
+offset_right = 908.0
+offset_bottom = 213.0
+theme_override_colors/font_color = Color(0.016811294, 0.43426916, 0.5335758, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/line_spacing = -2
+theme_override_constants/shadow_offset_x = 6
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("2_8saeu")
+theme_override_font_sizes/font_size = 64
+text = "NAVAL COMMAND"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1150806564]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

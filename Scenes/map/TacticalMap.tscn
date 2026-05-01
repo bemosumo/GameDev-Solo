@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://bceqt2woi6pgn" path="res://Assets/characters/5-3.png" id="10_4rl6s"]
 [ext_resource type="Texture2D" uid="uid://4pqjmji213by" path="res://Assets/kapal/erasebg-transformed.png" id="11_t28v1"]
 [ext_resource type="Texture2D" uid="uid://vj27npkndxox" path="res://Assets/kapal/shiper_mix_02.png" id="12_4rl6s"]
+[ext_resource type="PackedScene" uid="uid://cj5m6bxtkslux" path="res://Scenes/map/ItemMedkit.tscn" id="13_pcq44"]
+[ext_resource type="PackedScene" uid="uid://helsop0ys7k8" path="res://Scenes/map/ItemAmmo.tscn" id="14_actv3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_p1neq"]
 texture = ExtResource("9_uv678")
@@ -4024,6 +4026,15 @@ texture = ExtResource("12_4rl6s")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BossNode" unique_id=473326778]
 scale = Vector2(1, 1.0000001)
 shape = SubResource("RectangleShape2D_2547t")
+
+[node name="ItemAmmo" parent="." unique_id=1504690156 instance=ExtResource("14_actv3")]
+position = Vector2(1344, 448)
+scale = Vector2(0.7, 0.7)
+
+[node name="ItemMedkit" parent="." unique_id=406304271 instance=ExtResource("13_pcq44")]
+z_index = 1
+position = Vector2(64, 64)
+scale = Vector2(0.7, 0.7)
 
 [connection signal="body_entered" from="MobNode_Patrol_1" to="." method="_on_enemy_node_body_entered"]
 [connection signal="body_entered" from="MobNode_Cruiser_1" to="." method="_on_enemy_node_3_body_entered"]

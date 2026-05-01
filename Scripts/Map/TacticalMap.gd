@@ -7,7 +7,7 @@ extends Node2D
 
 var is_moving = false
 var current_map_pos = Vector2i()
-
+var item_positions = {}
 # Dictionary buat nyimpen data taktis
 var reachable_cells = {}
 var enemy_positions = {}
@@ -27,13 +27,12 @@ func _ready():
 			if "MobNode" in enemy_name:
 				mobs_defeated += 1
 		
-		if mobs_defeated >= 4:
+		if mobs_defeated >= 0:
 			boss_node.show() 
 			boss_node.process_mode = Node.PROCESS_MODE_INHERIT
 			
-			# Otomatis cari tau posisi boss di grid buat dicat merah
-			var boss_grid_pos = tilemap.local_to_map(tilemap.to_local(boss_node.global_position))
-			merahin_area_boss(boss_grid_pos)
+			# Langsung panggil fungsinya
+			merahin_area_boss()
 		else:
 			boss_node.hide() 
 			boss_node.process_mode = Node.PROCESS_MODE_DISABLED
@@ -62,8 +61,9 @@ func update_ammo_ui():
 
 func update_tactical_data():
 	scan_enemies()
+	scan_items() # TAMBAHIN BARIS INI
 	calculate_reachable_cells()
-	queue_redraw() # Panggil fungsi _draw() buat nge-highlight kotak
+	queue_redraw()
 
 func scan_enemies():
 	enemy_positions.clear()
@@ -71,18 +71,27 @@ func scan_enemies():
 		# Cek apakah dia Mob atau Boss, dan pastikan dia GAK lagi sembunyi
 		if child is Area2D and ("MobNode" in child.name or "BossNode" in child.name) and not child.is_queued_for_deletion():
 			if child.visible: 
-				var grid_pos = tilemap.local_to_map(tilemap.to_local(child.global_position))
-				
-				# LOGIKA BARU: Kalo dia Boss, daftarin 4 kotak sekaligus!
-				if "BossNode" in child.name:
-					enemy_positions[grid_pos] = child                           # Kiri Atas
-					enemy_positions[grid_pos + Vector2i(1, 0)] = child          # Kanan Atas
-					enemy_positions[grid_pos + Vector2i(0, 1)] = child          # Kiri Bawah
-					enemy_positions[grid_pos + Vector2i(1, 1)] = child          # Kanan Bawah
+				# KALO BOSS, KUNCI DI 6 KOORDINAT INI!
+				if "BossNode" in child.name:	
+					var area_boss = [
+						Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1),
+						Vector2i(4, 2), Vector2i(5, 2), Vector2i(6, 2)
+					]
+					for cell in area_boss:
+						enemy_positions[cell] = child
+				# KALO KROCO, BACA POSISI OTOMATIS
 				else:
-					# Kalo Kroco biasa, cukup 1 kotak aja
+					var grid_pos = tilemap.local_to_map(tilemap.to_local(child.global_position))
 					enemy_positions[grid_pos] = child
 
+func scan_items():
+	item_positions.clear()
+	for child in get_children():
+		# Deteksi kalau namanya mengandung "ItemAmmo" atau "ItemMedkit"
+		if child is Area2D and ("ItemAmmo" in child.name or "ItemMedkit" in child.name) and not child.is_queued_for_deletion():
+			var grid_pos = tilemap.local_to_map(tilemap.to_local(child.global_position))
+			item_positions[grid_pos] = child
+			
 func calculate_reachable_cells():
 	reachable_cells.clear()
 	var queue = [{"pos": current_map_pos, "path": [current_map_pos]}]
@@ -116,6 +125,9 @@ func _draw():
 	
 	var t_size = tilemap.tile_set.tile_size
 	
+	# =======================================================
+	# TAHAP 1: Area Jangkauan Player (Biru & Merah Standar)
+	# =======================================================
 	for cell in reachable_cells.keys():
 		if cell == current_map_pos: continue
 		
@@ -123,9 +135,25 @@ func _draw():
 		var rect = Rect2(center_pos - Vector2(t_size.x/2.0, t_size.y/2.0), t_size)
 		
 		if enemy_positions.has(cell):
-			draw_rect(rect, Color(1.0, 0.2, 0.2, 0.4))
+			draw_rect(rect, Color(1.0, 0.2, 0.2, 0.4)) # Merah kalau ada musuh
 		else:
-			draw_rect(rect, Color(0.2, 0.6, 1.0, 0.4))
+			draw_rect(rect, Color(0.2, 0.6, 1.0, 0.4)) # Biru kalau kosong
+			
+	# =======================================================
+	# TAHAP 2: Pengecualian Khusus Boss (Aura Intimidasi)
+	# =======================================================
+	for cell in enemy_positions.keys():
+		var node_musuh = enemy_positions[cell]
+		
+		# Cek apakah node ini namanya mengandung "BossNode"
+		if "BossNode" in node_musuh.name:
+			# Kalo kotaknya Boss ini DI LUAR jangkauan (belum kegambar di Tahap 1)
+			if not reachable_cells.has(cell):
+				var center_pos = tilemap.map_to_local(cell)
+				var rect = Rect2(center_pos - Vector2(t_size.x/2.0, t_size.y/2.0), t_size)
+				
+				# Paksa gambar warna merah!
+				draw_rect(rect, Color(1.0, 0.2, 0.2, 0.4))
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -146,7 +174,6 @@ func move_player_along_path(path):
 	queue_redraw()
 	
 	for next_tile in path:
-		# ... (kode tween gerak tetap sama)
 		var target_pixel_pos = tilemap.to_global(tilemap.map_to_local(next_tile))
 		var tween = create_tween()
 		tween.set_trans(Tween.TRANS_LINEAR)
@@ -155,43 +182,58 @@ func move_player_along_path(path):
 		
 		current_map_pos = next_tile
 		
+	if item_positions.has(current_map_pos):
+			var item_node = item_positions[current_map_pos]
+			
+			# Kalau nginjek ItemAmmo (+3 Ammo)
+			if "ItemAmmo" in item_node.name:
+				GlobalData.current_ammo += 3
+				if GlobalData.current_ammo > GlobalData.max_ammo:
+					GlobalData.current_ammo = GlobalData.max_ammo
+				print("AMMO DIAMBIL! Ammo sekarang: ", GlobalData.current_ammo)
+				
+			# Kalau nginjek ItemMedkit (+50% HP)
+			elif "ItemMedkit" in item_node.name:
+				var heal_amount = GlobalData.max_hp * 0.5
+				GlobalData.current_hp += heal_amount
+				if GlobalData.current_hp > GlobalData.max_hp:
+					GlobalData.current_hp = GlobalData.max_hp
+				print("MEDKIT DIAMBIL! HP sekarang: ", GlobalData.current_hp)
+					
+			# Hapus itemnya dari map & update UI
+			item_node.queue_free()
+			item_positions.erase(current_map_pos)
+			update_ammo_ui() # Fungsi lu yang kemaren buat update Bar HP & Teks Ammo
+		# =======================================================
+		
+	# (LOGIKA NABRAK MUSUH TETEP SAMA KAYAK SEBELUMNYA DI SINI)
 	if enemy_positions.has(current_map_pos):
-				# --- SIMPAN POSISI SEBELUM PINDAH SCENE ---
-				GlobalData.last_player_pos = current_map_pos
-				
-				var enemy_node = enemy_positions[current_map_pos]
-				GlobalData.current_enemy_name = enemy_node.name
-				
-				# (BARIS GlobalData.use_ammo(1) DAN update_ammo_ui() DIHAPUS DARI SINI)
-				
-				enemy_node.queue_free()
-				
-				await get_tree().create_timer(0.5).timeout
-				get_tree().change_scene_to_file("res://Scenes/map/BattlePhase.tscn")
-				return
+		GlobalData.last_player_pos = current_map_pos
+		var enemy_node = enemy_positions[current_map_pos]
+		GlobalData.current_enemy_name = enemy_node.name
+		enemy_node.queue_free()
+		
+		await get_tree().create_timer(0.5).timeout
+		get_tree().change_scene_to_file("res://Scenes/map/BattlePhase.tscn")
+		return
 				
 	is_moving = false
-	# --- UPDATE JUGA POSISI TERAKHIR SETIAP SELESAI GERAK BIASA ---
 	GlobalData.last_player_pos = current_map_pos
 	update_tactical_data()
 
 # ==========================================
-# FUNGSI BUAT NGECAT 4 KOTAK BOSS
+# FUNGSI BUAT NGECAT 6 KOTAK BOSS
 # ==========================================
-func merahin_area_boss(kiri_atas: Vector2i):
-	# Sesuaikan 3 angka ini dengan TileSet lu!
-	var layer_map = 0 # Biasanya 0 atau 1
-	var source_id = 0 # ID atlas (coba cek di tab TileSet)
-	var atlas_merah = Vector2i(0, 0) # Koordinat kotak merah di DALAM gambar tileset
+func merahin_area_boss():
+	var source_id = 0 # Pastiin ID atlas merah lu bener
+	var atlas_merah = Vector2i(0, 0) # Pastiin koordinat kotak merah di TileSet lu bener
 	
-	# Bikin daftar 4 kotak (Formasi 2x2)
+	# KOORDINAT PRESISI DARI KOMANDAN
 	var area_boss = [
-		kiri_atas,
-		kiri_atas + Vector2i(1, 0),
-		kiri_atas + Vector2i(0, 1),
-		kiri_atas + Vector2i(1, 1)
+		Vector2i(4, 1), Vector2i(5, 1), Vector2i(6, 1),
+		Vector2i(4, 2), Vector2i(5, 2), Vector2i(6, 2)
 	]
 	
-	# Warnain keempat kotaknya ke TileMap
+	# Warnain keenam kotaknya ke TileMapLayer
 	for cell in area_boss:
-		tilemap.set_cell(layer_map, cell, source_id, atlas_merah)
+		tilemap.set_cell(cell, source_id, atlas_merah)

@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://dm5g7n8yguw5c"]
+
+[ext_resource type="Script" uid="uid://d35e0hou8kbaa" path="res://Scripts/Battle/Boss.gd" id="1_dvd7a"]
+[ext_resource type="PackedScene" uid="uid://02eui714yuq" path="res://Scenes/Enemies/BossBullet.tscn" id="2_b1s5r"]
+[ext_resource type="Texture2D" uid="uid://vj27npkndxox" path="res://Assets/kapal/shiper_mix_02.png" id="2_wetjm"]
+[ext_resource type="PackedScene" uid="uid://gc5ex0cuktw4" path="res://Scenes/Enemies/TentacleBullet.tscn" id="3_h5ksp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u2brl"]
+size = Vector2(50.75, 175.75)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8m0q7"]
+bg_color = Color(0.6056738, 1.6605109e-06, 3.85046e-07, 1)
+
+[node name="Boss" type="CharacterBody2D" unique_id=1803503611 groups=["enemy"]]
+rotation = 3.1415927
+scale = Vector2(2, 2)
+collision_layer = 2
+script = ExtResource("1_dvd7a")
+bullet_scene = ExtResource("2_b1s5r")
+tentacle_scene = ExtResource("3_h5ksp")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=471095889]
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_wetjm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1312449517]
+scale = Vector2(2, 2)
+shape = SubResource("RectangleShape2D_u2brl")
+
+[node name="Timer" type="Timer" parent="." unique_id=11620109]
+wait_time = 0.8
+autostart = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=854014408]
+
+[node name="HealthBar" type="ProgressBar" parent="CanvasLayer" unique_id=1232219517]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 271.0
+offset_right = -333.0
+offset_bottom = 24.0
+grow_horizontal = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_8m0q7")
+show_percentage = false
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

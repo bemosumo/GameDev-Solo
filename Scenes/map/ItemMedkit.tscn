@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cj5m6bxtkslux"]
+
+[ext_resource type="Texture2D" uid="uid://bx5kih1dr7x2q" path="res://Assets/kapal/2D Pickups v6.2 spritesheet.png" id="1_n6nay"]
+[ext_resource type="Texture2D" uid="uid://cpq8lu121cg8y" path="res://Assets/kapal/Chat-1.png" id="2_yytu3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yytu3"]
+
+[node name="ItemMedkit" type="Area2D" unique_id=406304271]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=858777777]
+z_index = 2
+position = Vector2(-1.6940659e-21, -8.000002)
+scale = Vector2(2.6250002, 2.6250002)
+texture = ExtResource("1_n6nay")
+region_enabled = true
+region_rect = Rect2(5.9743195, 5.876185, 20.188763, 20.480673)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=69580419]
+position = Vector2(-1.5258789e-05, -8.000002)
+scale = Vector2(5, 5)
+shape = SubResource("RectangleShape2D_yytu3")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=1544213453]
+z_index = 1
+texture = ExtResource("2_yytu3")
+region_enabled = true
+region_rect = Rect2(542.8186, 510.9919, 98.07184, 110.74405)

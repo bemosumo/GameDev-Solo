@@ -11,6 +11,9 @@ size = Vector2(130, 128)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ujvlc"]
 bg_color = Color(0.011401681, 0.4669956, 0, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j0p6c"]
+bg_color = Color(0, 0.3764706, 1, 1)
+
 [node name="BattlePhase" type="Node2D" unique_id=2136306638]
 script = ExtResource("1_u2brl")
 
@@ -19,7 +22,6 @@ z_index = 1
 position = Vector2(579, 502)
 collision_mask = 3
 script = ExtResource("1_sj7t3")
-metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerShip" unique_id=1770661095]
 texture = ExtResource("3_j0p6c")
@@ -28,11 +30,20 @@ texture = ExtResource("3_j0p6c")
 shape = SubResource("RectangleShape2D_sj7t3")
 
 [node name="HealthBar" type="ProgressBar" parent="PlayerShip" unique_id=1365486758]
-offset_left = -63.0
-offset_top = -109.0
-offset_right = 68.0
-offset_bottom = -82.0
+offset_left = -66.0
+offset_top = -120.0
+offset_right = 65.0
+offset_bottom = -93.0
 theme_override_styles/fill = SubResource("StyleBoxFlat_ujvlc")
+show_percentage = false
+
+[node name="SkillBar" type="ProgressBar" parent="PlayerShip" unique_id=494998197]
+modulate = Color(0, 0.31764707, 1, 1)
+offset_left = -66.0
+offset_top = -90.0
+offset_right = 65.0
+offset_bottom = -80.0
+theme_override_styles/fill = SubResource("StyleBoxFlat_j0p6c")
 show_percentage = false
 
 [node name="Timer" type="Timer" parent="." unique_id=978588119]
@@ -42,3 +53,6 @@ autostart = true
 position = Vector2(588, -46.000015)
 scale = Vector2(0.55011374, 1.1526731)
 texture = ExtResource("4_j0p6c")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=604482132]
+color = Color(0.29280436, 0.3071431, 0.32148185, 1)

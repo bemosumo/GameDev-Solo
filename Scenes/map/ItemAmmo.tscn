@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://helsop0ys7k8"]
+
+[ext_resource type="Texture2D" uid="uid://bx5kih1dr7x2q" path="res://Assets/kapal/2D Pickups v6.2 spritesheet.png" id="1_uo7cd"]
+[ext_resource type="Texture2D" uid="uid://cpq8lu121cg8y" path="res://Assets/kapal/Chat-1.png" id="2_8aall"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8aall"]
+size = Vector2(96, 112)
+
+[node name="ItemAmmo" type="Area2D" unique_id=1504690156]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=732590041]
+shape = SubResource("RectangleShape2D_8aall")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1637730210]
+position = Vector2(-2.3841858e-07, -8)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("1_uo7cd")
+region_enabled = true
+region_rect = Rect2(5.6877966, 72.62528, 20.228664, 15.724304)
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=2040565878]
+z_index = -1
+texture = ExtResource("2_8aall")
+region_enabled = true
+region_rect = Rect2(543.3706, 511.53754, 97.57599, 111.51538)

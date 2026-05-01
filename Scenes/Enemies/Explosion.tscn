@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bfb7t7r8amqn6"]
+
+[ext_resource type="Texture2D" uid="uid://lapog0752o2b" path="res://Assets/characters/FoxShotSheet.png" id="1_hx2wv"]
+[ext_resource type="Script" uid="uid://c2mhm6byc8gbe" path="res://Scripts/Battle/Explosion.gd" id="2_ywhtx"]
+
+[node name="Explosion" type="Sprite2D" unique_id=868325291]
+texture = ExtResource("1_hx2wv")
+region_enabled = true
+region_rect = Rect2(175.49097, -0.3920884, 64.95831, 64.49098)
+script = ExtResource("2_ywhtx")

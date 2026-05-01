@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://brohvik5xxr65"]
+
+[ext_resource type="Texture2D" uid="uid://lapog0752o2b" path="res://Assets/characters/FoxShotSheet.png" id="1_5fi84"]
+[ext_resource type="Script" uid="uid://dogxl2u1qjy6v" path="res://Scripts/Battle/PlayerLaser.gd" id="1_aa8tr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aa8tr"]
+size = Vector2(12, 16.2)
+
+[node name="PlayerLaser" type="Area2D" unique_id=223691206]
+script = ExtResource("1_aa8tr")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1644969264]
+rotation = 1.5707964
+texture = ExtResource("1_5fi84")
+region_enabled = true
+region_rect = Rect2(65.65112, 143.6122, 12.366516, 16.379486)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=816099613]
+rotation = 1.5707964
+shape = SubResource("RectangleShape2D_aa8tr")

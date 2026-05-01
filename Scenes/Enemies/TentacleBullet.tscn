@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://gc5ex0cuktw4"]
+
+[ext_resource type="Script" uid="uid://07cko0eu3rx2" path="res://Scripts/Battle/TentacleBullet.gd" id="1_ri1lk"]
+[ext_resource type="Texture2D" uid="uid://lapog0752o2b" path="res://Assets/characters/FoxShotSheet.png" id="2_8j23k"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0r8ud"]
+radius = 12.0415945
+
+[node name="TentacleBullet" type="Area2D" unique_id=1090768629]
+script = ExtResource("1_ri1lk")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2037911252]
+position = Vector2(9.536743e-07, 9.536743e-07)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("2_8j23k")
+region_enabled = true
+region_rect = Rect2(99.74983, 3.87593, 8.42971, 8.306645)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1526552838]
+shape = SubResource("CircleShape2D_0r8ud")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=27296249]
