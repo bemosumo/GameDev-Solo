@@ -9,6 +9,92 @@
 [ext_resource type="AudioStream" uid="uid://ky34mtlg0g3d" path="res://Assets/Audio/eggshy-clash-of-warriors-417527.mp3" id="7_h4j1b"]
 [ext_resource type="AudioStream" uid="uid://cmp7cd0hvf4g3" path="res://Assets/Audio/dragon-studio-loud-explosion-425457.mp3" id="8_uf2rd"]
 [ext_resource type="FontFile" uid="uid://bs1x55h3t01ye" path="res://Assets/font/Goldman-Bold.ttf" id="9_4mqkj"]
+[ext_resource type="Texture2D" uid="uid://dht867pjdntou" path="res://Assets/characters/Spell casting Magic Symbol 01 Big 256x256 Blue.png" id="10_shield"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shield_0"]
+atlas = ExtResource("10_shield")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shield_1"]
+atlas = ExtResource("10_shield")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shield_2"]
+atlas = ExtResource("10_shield")
+region = Rect2(512, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shield_3"]
+atlas = ExtResource("10_shield")
+region = Rect2(768, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shield_4"]
+atlas = ExtResource("10_shield")
+region = Rect2(0, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shield_5"]
+atlas = ExtResource("10_shield")
+region = Rect2(256, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shield_6"]
+atlas = ExtResource("10_shield")
+region = Rect2(512, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shield_7"]
+atlas = ExtResource("10_shield")
+region = Rect2(768, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shield_8"]
+atlas = ExtResource("10_shield")
+region = Rect2(0, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shield_9"]
+atlas = ExtResource("10_shield")
+region = Rect2(256, 512, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shield_10"]
+atlas = ExtResource("10_shield")
+region = Rect2(512, 512, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_shield"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shield_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shield_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shield_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shield_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shield_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shield_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shield_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shield_7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shield_8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shield_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shield_10")
+}],
+"loop": false,
+"name": &"active",
+"speed": 16.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sj7t3"]
 size = Vector2(130, 128)
@@ -18,6 +104,49 @@ bg_color = Color(0.011401681, 0.4669956, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j0p6c"]
 bg_color = Color(0, 0.3764706, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shield_button"]
+bg_color = Color(0.008, 0.28, 0.62, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.35, 0.86, 1, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shield_button_disabled"]
+bg_color = Color(0.08, 0.1, 0.14, 0.86)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.22, 0.32, 0.38, 1)
+corner_radius_top_left = 32
+corner_radius_top_right = 32
+corner_radius_bottom_right = 32
+corner_radius_bottom_left = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shield_bar_bg"]
+bg_color = Color(0.02, 0.05, 0.04, 0.88)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.05, 0.28, 0.16, 1)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shield_bar_fill"]
+bg_color = Color(0.13, 0.92, 0.35, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [node name="BattlePhase" type="Node2D" unique_id=2136306638]
 script = ExtResource("1_u2brl")
@@ -31,6 +160,15 @@ laser_scene = ExtResource("3_ujvlc")
 
 [node name="Sprite2D" type="Sprite2D" parent="PlayerShip" unique_id=1770661095]
 texture = ExtResource("3_j0p6c")
+
+[node name="ShieldSprite" type="AnimatedSprite2D" parent="PlayerShip" unique_id=676176073]
+visible = false
+modulate = Color(1, 1, 1, 0.85)
+z_index = 6
+position = Vector2(0, -42)
+scale = Vector2(0.6, 0.6)
+sprite_frames = SubResource("SpriteFrames_shield")
+animation = &"active"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerShip" unique_id=1467766824]
 shape = SubResource("RectangleShape2D_sj7t3")
@@ -56,7 +194,7 @@ show_percentage = false
 autostart = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=10906081]
-position = Vector2(588, -46.000015)
+position = Vector2(636, -36.000015)
 scale = Vector2(0.55011374, 1.1526731)
 texture = ExtResource("4_j0p6c")
 
@@ -64,6 +202,33 @@ texture = ExtResource("4_j0p6c")
 color = Color(0.53236085, 0.5865579, 0.6136565, 1)
 
 [node name="PauseMenu" parent="." unique_id=2066382079 instance=ExtResource("6_8m0q7")]
+
+[node name="ShieldUI" type="CanvasLayer" parent="." unique_id=560998870]
+
+[node name="ShieldButton" type="Button" parent="ShieldUI" unique_id=498635305]
+offset_left = 32.0
+offset_top = 578.0
+offset_right = 96.0
+offset_bottom = 642.0
+theme_override_colors/font_color = Color(0.7, 0.95, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.35, 0.5, 0.55, 1)
+theme_override_fonts/font = ExtResource("9_4mqkj")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_shield_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_shield_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_shield_button")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_shield_button_disabled")
+disabled = true
+text = "S"
+
+[node name="ShieldCooldownBar" type="ProgressBar" parent="ShieldUI" unique_id=37355283]
+offset_left = 110.0
+offset_top = 599.0
+offset_right = 310.0
+offset_bottom = 623.0
+theme_override_styles/background = SubResource("StyleBoxFlat_shield_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_shield_bar_fill")
+show_percentage = false
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1983122513]
 stream = ExtResource("7_h4j1b")
@@ -106,4 +271,5 @@ theme_override_fonts/font = ExtResource("9_4mqkj")
 theme_override_font_sizes/font_size = 30
 text = "RETURN TO BASE"
 
+[connection signal="pressed" from="ShieldUI/ShieldButton" to="PlayerShip" method="activate_shield"]
 [connection signal="pressed" from="Winlayer/BtnReturnMainMenu" to="." method="_on_btn_return_main_menu_pressed"]

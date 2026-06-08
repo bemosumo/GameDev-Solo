@@ -6,11 +6,22 @@ var can_shoot: bool = false
 
 @onready var health_bar = $HealthBar
 @onready var skill_bar = $SkillBar # Pastiin nama nodenya sama
+@onready var shield_sprite = $ShieldSprite
+@onready var shield_bar = get_node_or_null("../ShieldUI/ShieldCooldownBar")
+@onready var shield_button = get_node_or_null("../ShieldUI/ShieldButton")
 @export var laser_scene: PackedScene # Slot buat PlayerLaser.tscn
 
 var charge_time: float = 8.0
 var current_charge: float = 0.0
 var is_skill_ready: bool = false
+@export var shield_cooldown_time: float = 10.0
+@export var shield_duration: float = 5.0
+@export var shield_fade_time: float = 0.6
+var current_shield_charge: float = 0.0
+var is_shield_ready: bool = false
+var is_shield_active: bool = false
+var shield_tween: Tween
+var shield_default_modulate: Color
 
 func _ready():
 	add_to_group("player")
@@ -19,8 +30,19 @@ func _ready():
 	if skill_bar:
 			skill_bar.max_value = charge_time
 			skill_bar.value = 0.0 # Awalnya kosong
+	if shield_bar:
+		shield_bar.max_value = shield_cooldown_time
+		shield_bar.value = 0.0
+	if shield_button:
+		shield_button.disabled = true
+	if shield_sprite:
+		shield_default_modulate = shield_sprite.modulate
+		reset_shield_visual()
 			
 func take_damage(amount: float):
+	if is_shield_active:
+		return
+
 	GlobalData.current_hp -= amount
 	health_bar.value = GlobalData.current_hp
 	
@@ -34,6 +56,7 @@ func _physics_process(_delta):
 	# 1. BACA INPUT WASD / PANAH (Bebas 4 Arah)
 	var dir_x = Input.get_axis("ui_left", "ui_right")
 	var dir_y = Input.get_axis("ui_up", "ui_down")
+
 	# Sistem Charge Ultimate
 	if not is_skill_ready:
 		current_charge += _delta
@@ -43,6 +66,19 @@ func _physics_process(_delta):
 		
 		if skill_bar:
 			skill_bar.value = current_charge
+
+	var shield_visual_finished = shield_sprite == null or not shield_sprite.visible
+	if not is_shield_ready and not is_shield_active and shield_visual_finished:
+		current_shield_charge += _delta
+		if current_shield_charge >= shield_cooldown_time:
+			current_shield_charge = shield_cooldown_time
+			is_shield_ready = true
+			if shield_button:
+				shield_button.disabled = false
+
+		if shield_bar:
+			shield_bar.value = current_shield_charge
+
 	# 2. TERAPIN KECEPATAN GERAK
 	# Pake .normalized() biar kalau gerak serong (nyilang) kecepatannya gak dobel
 	velocity = Vector2(dir_x, dir_y).normalized() * speed
@@ -111,3 +147,46 @@ func tembak_laser(target_musuh):
 		laser.position = Vector2(0, -65) 
 		
 		laser.target_enemy = target_musuh
+
+func activate_shield():
+	if not is_shield_ready or is_shield_active:
+		return
+
+	is_shield_ready = false
+	is_shield_active = true
+	current_shield_charge = 0.0
+	if shield_bar:
+		shield_bar.value = 0.0
+	if shield_button:
+		shield_button.disabled = true
+	if shield_sprite:
+		await play_shield_intro()
+
+	await get_tree().create_timer(shield_duration).timeout
+	deactivate_shield()
+
+func deactivate_shield():
+	is_shield_active = false
+	if shield_sprite:
+		if shield_tween:
+			shield_tween.kill()
+		shield_tween = create_tween()
+		shield_tween.tween_property(shield_sprite, "modulate:a", 0.0, shield_fade_time).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+		await shield_tween.finished
+		reset_shield_visual()
+		shield_tween = null
+
+func play_shield_intro():
+	shield_sprite.visible = true
+	shield_sprite.modulate = shield_default_modulate
+	shield_sprite.frame = 0
+	shield_sprite.play("active")
+	await shield_sprite.animation_finished
+	shield_sprite.stop()
+	shield_sprite.frame = shield_sprite.sprite_frames.get_frame_count("active") - 1
+
+func reset_shield_visual():
+	shield_sprite.visible = false
+	shield_sprite.stop()
+	shield_sprite.frame = 0
+	shield_sprite.modulate = shield_default_modulate
